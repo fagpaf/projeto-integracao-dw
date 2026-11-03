@@ -1,5 +1,6 @@
 # Dados brutos baixados do Portal da Transparência
 data/raw/*.zip
+data/raw/*_CPGF.csv
 
 # Python
 __pycache__/
