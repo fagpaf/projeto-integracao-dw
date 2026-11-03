@@ -23,6 +23,7 @@ python scripts/extract_cpgf.py 2022 2024
 Tudo fica em `data/raw/`:
 
 - `AAAAMM_CPGF.zip`: os arquivos mensais originais. Não sobem para o GitHub, já que o script consegue baixá-los de novo.
+- `AAAA_CPGF.csv`: todos os registros do ano (os 12 meses juntos, com um único cabeçalho), em UTF-8 e separados por `;`. Também não sobem para o GitHub.
 - `amostras/AAAA_amostra.csv`: o cabeçalho e as 100 primeiras linhas de janeiro de cada ano, para dar uma olhada nos dados sem precisar baixar tudo.
 - `metadados.json`: para cada mês, o link de onde o arquivo veio, o tamanho, o hash sha256, a quantidade de registros, as colunas e a data do download.
 
@@ -35,7 +36,7 @@ Tudo fica em `data/raw/`:
 | 2025 | 160.800   |
 
 - As 15 colunas são as mesmas nos três anos.
-- Os arquivos originais vêm em Latin-1, separados por `;`, e os valores usam vírgula como separador decimal (ex.: `162,48`).
+- Os arquivos originais vêm em Latin-1 (os CSVs gerados pelo script já saem em UTF-8), separados por `;`, e os valores usam vírgula como separador decimal (ex.: `162,48`).
 - O extrato de um mês pode ter compras de meses anteriores. O de janeiro de 2023, por exemplo, tem compras de novembro e dezembro de 2022.
 - Cerca de 25% das linhas são sigilosas: o nome do portador, o favorecido e a data aparecem como "Sigiloso" ou vazios.
 - O CPF do portador já vem mascarado pelo próprio portal (ex.: `***.562.861-**`).

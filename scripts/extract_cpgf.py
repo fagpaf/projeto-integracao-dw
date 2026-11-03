@@ -1,13 +1,3 @@
-# Coleta dos dados do CPGF (Cartão de Pagamento do Governo Federal)
-# Fonte: https://portaldatransparencia.gov.br/download-de-dados/cpgf
-#
-# O portal disponibiliza um .zip por mês. Este script baixa os meses dos anos
-# escolhidos, salva uma amostra de cada ano e gera o arquivo metadados.json.
-#
-# Como rodar
-#   python scripts/extract_cpgf.py -> 2023 a 2025
-#   python scripts/extract_cpgf.py 2022 2024 -> outro intervalo
-
 import hashlib
 import json
 import re
@@ -61,6 +51,7 @@ def main():
 
     for ano in range(ano_inicio, ano_fim + 1):
         amostra = []
+        saida = open(PASTA_RAW / f"{ano}_CPGF.csv", "w", encoding="utf-8")
 
         for mes in range(1, 13):
             ref = f"{ano}{mes:02d}"
@@ -80,6 +71,10 @@ def main():
             if mes == 1:
                 amostra = linhas[:101]
 
+            # cada mês vem com o próprio cabeçalho
+            inicio = 0 if mes == 1 else 1
+            saida.write("\n".join(linhas[inicio:]) + "\n")
+
             metadados.append({
                 "referencia": ref,
                 "url_origem": url_final,
@@ -93,6 +88,7 @@ def main():
 
             time.sleep(0.5)  # pausa pra não sobrecarregar o portal
 
+        saida.close()
         (PASTA_AMOSTRAS / f"{ano}_amostra.csv").write_text("\n".join(amostra), encoding="utf-8")
 
     ARQ_METADADOS.write_text(json.dumps(metadados, ensure_ascii=False, indent=2), encoding="utf-8")
