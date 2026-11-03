@@ -1,0 +1,6 @@
+# Dados brutos baixados do Portal da Transparência
+data/raw/*.zip
+
+# Python
+__pycache__/
+.ipynb_checkpoints/
