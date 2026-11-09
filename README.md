@@ -10,6 +10,8 @@ Período analisado: 2023, 2024 e 2025.
 
 - [Coleta dos dados](docs/coleta-de-dados.md): como baixar os arquivos do portal e o que fica salvo em `data/raw/`
 
+- [Inspeção dos dados](docs/data-profiling.md): etapas realizadas e instruções da auditoria dos dados.
+
 ## Estrutura do repositório
 
 ```

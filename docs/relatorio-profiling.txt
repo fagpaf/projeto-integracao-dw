@@ -1,0 +1,69 @@
+DATA PROFILING E AUDITORIA TEMPORAL — CPGF
+Gerado em (UTC): 2026-11-09T14:31:29+00:00
+Arquivos analisados:
+- /home/fagpaf/Projetos/projeto-integracao-dw/data/raw/2023_CPGF.csv
+- /home/fagpaf/Projetos/projeto-integracao-dw/data/raw/2024_CPGF.csv
+- /home/fagpaf/Projetos/projeto-integracao-dw/data/raw/2025_CPGF.csv
+
+=== 2023_CPGF.csv ===
+Encoding de leitura: utf-8-sig | Separador: ; | Shape: (134122, 15)
+Tipos na leitura: texto em todas as colunas (preserva zeros e máscaras).
+Duplicatas excedentes: 28116 (20.96%)
+Linhas sigilosas: 32224 (24.03%)
+Vazios por coluna: {'CPF PORTADOR': 32224, 'DATA TRANSAÇÃO': 32224}
+Marcadores nulos por coluna: {}
+Favorecido: {'DOC_14_DIGITOS': 77779, '-11': 32224, '-2': 14916, '-1': 6434, 'DOC_11_DIGITOS': 2769}
+Datas preenchidas não convertíveis: 0
+Valores fora do formato decimal brasileiro: 0
+Intervalo das datas: 2022-10-12 00:00:00 a 2023-11-26 00:00:00
+Períodos de extrato inválidos: 0
+Transações em mês anterior/posterior ao extrato: 101898 / 0
+2023: meses sem registros: []
+
+=== 2024_CPGF.csv ===
+Encoding de leitura: utf-8-sig | Separador: ; | Shape: (143849, 15)
+Tipos na leitura: texto em todas as colunas (preserva zeros e máscaras).
+Duplicatas excedentes: 32502 (22.59%)
+Linhas sigilosas: 39286 (27.31%)
+Vazios por coluna: {'CPF PORTADOR': 39285, 'DATA TRANSAÇÃO': 39285}
+Marcadores nulos por coluna: {}
+Favorecido: {'DOC_14_DIGITOS': 84151, '-11': 39285, '-2': 10720, '-1': 5479, 'DOC_11_DIGITOS': 4214}
+Datas preenchidas não convertíveis: 0
+Valores fora do formato decimal brasileiro: 0
+Intervalo das datas: 2023-05-22 00:00:00 a 2024-11-26 00:00:00
+Períodos de extrato inválidos: 0
+Transações em mês anterior/posterior ao extrato: 104564 / 0
+2024: meses sem registros: []
+Comparação com 2023_CPGF.csv:
+Colunas adicionadas: []
+Colunas removidas: []
+Mesmo cabeçalho e ordem: True
+Categorias novas: ['COMP A/V-SOL DISP C/CLI-R$ ANT VENC']
+Categorias ausentes: ['SAQUE - R$ - APRES']
+
+=== 2025_CPGF.csv ===
+Encoding de leitura: utf-8-sig | Separador: ; | Shape: (160800, 15)
+Tipos na leitura: texto em todas as colunas (preserva zeros e máscaras).
+Duplicatas excedentes: 34044 (21.17%)
+Linhas sigilosas: 38663 (24.04%)
+Vazios por coluna: {'CPF PORTADOR': 38663, 'DATA TRANSAÇÃO': 38663}
+Marcadores nulos por coluna: {}
+Favorecido: {'DOC_14_DIGITOS': 94791, '-11': 38663, '-2': 14312, '-1': 6940, 'DOC_11_DIGITOS': 6094}
+Datas preenchidas não convertíveis: 0
+Valores fora do formato decimal brasileiro: 0
+Intervalo das datas: 2024-11-23 00:00:00 a 2025-11-27 00:00:00
+Períodos de extrato inválidos: 0
+Transações em mês anterior/posterior ao extrato: 122137 / 0
+2025: meses sem registros: []
+Comparação com 2024_CPGF.csv:
+Colunas adicionadas: []
+Colunas removidas: []
+Mesmo cabeçalho e ordem: True
+Categorias novas: ['CPP LOJISTA TRF P/FATURA - REAL']
+Categorias ausentes: ['COMP A/V-SOL DISP C/CLI-R$ ANT VENC']
+
+Observações:
+- Os dados originais foram preservados, este relatório não realiza tratamento.
+- Repetições exatas não comprovam duplicidade de operações, especialmente sob sigilo.
+- Latin-1 é fallback de leitura e não distingue Latin-1 de Windows-1252.
+- Meses ausentes em amostras não comprovam lacunas na base completa.
