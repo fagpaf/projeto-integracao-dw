@@ -1,71 +1,40 @@
-# Decisões de Modelagem do Data Warehouse CPGF
+# DecisÃµes de Modelagem â€” Data Warehouse CPGF (2023â€“2025)
 
-Este documento apresenta as principais decisões tomadas durante a construção do modelo multidimensional do Data Warehouse (DW) dos dados do Cartão de Pagamento do Governo Federal (CPGF).
+DecisÃµes arquiteturais aplicadas ao modelo dimensional em Esquema Estrela (*Star Schema*) do CartÃ£o de Pagamento do Governo Federal (CPGF).
 
-## 1. Grão da tabela fato
+## 1. GrÃ£o da Tabela Fato
+Cada linha da `FATO_TRANSACAO_CPGF` representa **uma transaÃ§Ã£o individual (compra ou saque)**.
+- **Chave primÃ¡ria:** `id_transacao` (chave substituta sequencial).
+- **Medidas:** `valor_transacao` (valor financeiro da operaÃ§Ã£o) e `quantidade_transacoes` (constante `1` por registro para agregaÃ§Ãµes).
 
-Foi definido que cada registro da `FATO_TRANSACAO_CPGF` representa uma transação individual realizada com o CPGF.
+## 2. DimensÃ£o Temporal (*Role-Playing Dimension*)
+Uma Ãºnica tabela `DIM_TEMPO` cumpre dois papÃ©is distintos na tabela fato:
+- `id_data_transacao`: data em que a compra ou saque ocorreu.
+- `id_mes_extrato`: mÃªs e ano da prestaÃ§Ã£o de contas, ancorado no dia `01` do respectivo mÃªs (ex: `2023-01-01`).
 
-Dessa forma, cada linha da tabela fato corresponde a uma compra ou saque, permitindo analisar os valores e as quantidades de transações por diferentes dimensões.
+Isso evita duplicar tabelas de calendÃ¡rio e permite analisar transaÃ§Ãµes sigilosas (que omitem a data da compra, mas informam o mÃªs do extrato).
 
-## 2. Dimensão temporal
+## 3. DimensÃ£o de Favorecido (`DIM_FAVORECIDO`)
+Identificada pelo par `(documento, nome_favorecido)`. O campo `documento` Ã© mantido como texto para preservar zeros Ã  esquerda e mÃ¡scaras.
+O atributo `tipo_pessoa` Ã© derivado do formato do documento apÃ³s limpeza de pontuaÃ§Ã£o:
+- **PJ:** 14 dÃ­gitos numÃ©ricos (CNPJ).
+- **PF:** 11 dÃ­gitos numÃ©ricos (CPF completo) ou padrÃ£o de mÃ¡scara da LGPD (`***.XXX.XXX-**`, com 6 dÃ­gitos visÃ­veis).
+- **Especial:** valores administrativos da fonte (`"-1"` / `"SEM INFORMACAO"`, `"-2"` / `"NAO SE APLICA"` e `"-11"` / `"Sigiloso"`) sÃ£o preservados em suas prÃ³prias categorias, sem classificÃ¡-los incorretamente como PF ou PJ.
 
-Optou-se por utilizar uma única dimensão temporal (`DIM_TEMPO`), referenciada duas vezes na tabela fato:
+## 4. DimensÃ£o de Ã“rgÃ£o (`DIM_ORGAO`)
+ReÃºne os 3 nÃ­veis da hierarquia administrativa (**Unidade Gestora**, **Ã“rgÃ£o** e **Ã“rgÃ£o Superior**) desnormalizados em uma Ãºnica tabela dimensÃ£o, mantendo o *Star Schema* puro e evitando *JOINs* em cascata (*Snowflake*).
 
-- `id_data_transacao`: representa a data em que a compra ou o saque foi realizado.
-- `id_mes_extrato`: representa o ano e o mês aos quais o registro pertence no extrato.
+## 5. DimensÃ£o de Portador (`DIM_PORTADOR`)
+A chave natural de negÃ³cio combina `(cpf_mascarado, nome_portador)`, pois o CPF parcialmente oculto (`***.XXX.XXX-**`) isoladamente pode se repetir entre servidores homÃ´nimos ou distintos.
 
-Essas informações possuem finalidades diferentes e não devem ser confundidas. Uma mesma data de transação pode estar associada a diferentes meses de extrato. Além disso, existem registros sem data de transação informada, mas que possuem o mês do extrato.
+## 6. DimensÃ£o de Tipo de TransaÃ§Ã£o (`DIM_TIPO_TRANSACAO`)
+Preserva a `descricao_original` da fonte e deriva trÃªs atributos analÃ­ticos: `categoria` (*Compra*, *Saque*, *Sigiloso*), `moeda` (*BRL*, *USD*, *NÃ£o AplicÃ¡vel*) e `canal` (*CartÃ£o / Fatura*, *EspÃ©cie / Autoatendimento*, *Sigiloso*).
 
-Para representar o mês do extrato, será utilizado o primeiro dia do mês como referência. Por exemplo, janeiro de 2023 será representado por 01/01/2023.
+## 7. Chaves Substitutas (*Surrogate Keys*)
+Todas as dimensÃµes utilizam chaves primÃ¡rias inteiras (`id_...`), referenciadas como chaves estrangeiras na `FATO_TRANSACAO_CPGF`.
 
-Assim, a mesma dimensão exerce dois papéis temporais distintos, evitando a duplicação de estruturas.
-
-## 3. Dimensão de favorecido
-
-A `DIM_FAVORECIDO` possui os atributos `documento`, `nome_favorecido` e `tipo_pessoa`.
-
-O atributo `tipo_pessoa` será utilizado para diferenciar pessoas físicas e jurídicas a partir do tamanho do documento, após a remoção de caracteres não numéricos:
-
-- 11 dígitos: Pessoa Física (CPF).
-- 14 dígitos: Pessoa Jurídica (CNPJ).
-
-O documento será armazenado como texto, preservando possíveis zeros à esquerda.
-
-Registros com documentos ausentes, sigilosos ou que não correspondam aos formatos de CPF e CNPJ serão tratados separadamente, sem classificação incorreta como pessoa física ou jurídica.
-
-## 4. Dimensão de órgão
-
-A `DIM_ORGAO` reúne informações da hierarquia administrativa presente na base, incluindo:
-
-- Unidade Gestora (UG);
-- Órgão;
-- Órgão superior.
-
-Optou-se por manter essas informações em uma única dimensão, evitando a criação de dimensões separadas para cada nível hierárquico.
-
-## 5. Dimensão de portador
-
-A `DIM_PORTADOR` armazena as informações de identificação do portador, utilizando um identificador próprio (`id_portador`).
-
-A identificação considera o CPF mascarado e o nome do portador em conjunto, pois o CPF mascarado, isoladamente, pode aparecer associado a nomes diferentes na base.
-
-## 6. Dimensão de tipo de transação
-
-A `DIM_TIPO_TRANSACAO` armazena a descrição original do tipo de transação e atributos derivados para facilitar as análises, como categoria, moeda e canal.
-
-A descrição original será preservada para manter a informação disponibilizada pela fonte de dados.
-
-## 7. Chaves das dimensões
-
-As dimensões utilizarão chaves substitutas (surrogate keys), representadas pelos atributos `id_...`.
-
-Essas chaves serão utilizadas como chaves primárias das dimensões e como chaves estrangeiras na tabela fato, permitindo estabelecer os relacionamentos do modelo estrela.
-
-## 8. Tratamento de transações sigilosas e informações ausentes
-
-Aproximadamente 25% dos registros da base (110.172) são protegidos por sigilo e não informam a data da transação nem o CPF do portador. Esses registros não serão descartados, pois ainda contêm o valor, o órgão e o mês do extrato, relevantes para as análises.
-
-Para representar essas ausências, serão criados membros especiais com identificador -1 em DIM_TEMPO (data da transação não informada) e em DIM_PORTADOR (portador não identificado). Nos registros sigilosos, id_data_transacao aponta para o membro -1, enquanto id_mes_extrato continua referenciando o período correspondente.
-
-As demais dimensões não possuem valores ausentes. A própria fonte já identifica os casos especiais do favorecido (?Sigiloso?, ?NAO SE APLICA? e ?SEM INFORMACAO?) e o tipo de transação sigiloso, que são mantidos como membros regulares das respectivas dimensões, sem agrupamento.
+## 8. TransaÃ§Ãµes Sigilosas e Valores Ausentes
+Cerca de 25% dos registros (110.172 transaÃ§Ãµes) sÃ£o sigilosos e nÃ£o informam data da transaÃ§Ã£o nem portador. Esses registros sÃ£o mantidos para preservar a soma real dos gastos por Ã³rgÃ£o e perÃ­odo.
+- Criou-se o membro especial **`-1`** em `DIM_TEMPO` (*NÃ£o Informado / Sigiloso*) e em `DIM_PORTADOR` (*Portador Sigiloso*).
+- Nas transaÃ§Ãµes sob sigilo, `id_data_transacao` e `id_portador` apontam para `-1`, enquanto `id_mes_extrato` aponta normalmente para o mÃªs do extrato.
+- Em `DIM_FAVORECIDO` e `DIM_TIPO_TRANSACAO`, as marcaÃ§Ãµes `"Sigiloso"`, `"NAO SE APLICA"` e `"SEM INFORMACAO"` jÃ¡ vÃªm preenchidas na fonte e sÃ£o tratadas como membros regulares.
