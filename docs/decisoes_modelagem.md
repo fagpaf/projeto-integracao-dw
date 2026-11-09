@@ -1,4 +1,4 @@
-# Decisões de Modelagem — Data Warehouse CPGF (2023–2025)
+# Decisões de Modelagem — Data Warehouse CPGF
 
 Decisões arquiteturais aplicadas ao modelo dimensional em Esquema Estrela (*Star Schema*) do Cartão de Pagamento do Governo Federal (CPGF).
 
