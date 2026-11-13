@@ -2,6 +2,12 @@
 data/raw/*.zip
 data/raw/*_CPGF.csv
 
+# SQLite
+*.sqlite
+*.sqlite-wal
+*.sqlite-shm
+*.sqlite-journal
+
 # Python
 __pycache__/
 .ipynb_checkpoints/
