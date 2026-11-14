@@ -1,5 +1,7 @@
-## Pipeline ELT — Extract & Load
+## Pipeline ELT — Extract, Load & Transform
 
-Execute [ELT.ipynb](ELT.ipynb) para carregar os CSVs de 2023, 2024 e 2025 em `raw_cpgf_2023`, `raw_cpgf_2024` e `raw_cpgf_2025`, no SQLite `data/database/cpgf_elt.sqlite`. O notebook usa apenas a biblioteca padrão do Python e preserva as 15 colunas e seus valores como texto, sem transformação.
+Execute [ELT.ipynb](ELT.ipynb) para carregar os CSVs de 2023, 2024 e 2025 em `raw_cpgf_2023`, `raw_cpgf_2024` e `raw_cpgf_2025`, no SQLite `data/database/cpgf_elt.sqlite`. Essa primeira parte do notebook usa apenas a biblioteca padrão do Python e preserva as 15 colunas e seus valores como texto, sem transformação.
 
 Antes, gere os CSVs com `python scripts/extract_cpgf.py`. Para usar as amostras versionadas, configure `MODO_AMOSTRA = True` no notebook; a saída será `cpgf_elt_amostra.sqlite`. Execute todas as células na ordem. A carga pode ser repetida sem acumular registros e só é confirmada após conferir contagens e conteúdo com os arquivos de origem.
+
+Na sequência, o próprio notebook recria as tabelas do esquema estrela (`DIM_*`, `FATO_TRANSACAO_CPGF`, definidas em `scripts/sql/ddl/schema.sql`) dentro do mesmo banco e executa, em ordem, os scripts de `scripts/sql/elt_transformations/`. Esses scripts fazem toda a limpeza de strings, conversão de números/datas, tratamento de sigilo/nulos e a montagem das dimensões e da fato usando puramente SQL — sem pandas —, lendo apenas das tabelas `raw_cpgf_*` já carregadas. As regras de negócio (sigilo, classificação de documento, calendário, tipos de transação) são as mesmas documentadas em `docs/decisoes_modelagem.md` e implementadas em Python no `ETL.ipynb`; aqui elas são expressas como SQL puro, dentro do próprio banco. A carga do esquema estrela também pode ser repetida sem acumular registros, e é validada (contagens, integridade referencial e totais financeiros) antes de ser considerada concluída.
