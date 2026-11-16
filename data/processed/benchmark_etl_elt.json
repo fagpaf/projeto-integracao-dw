@@ -1,0 +1,270 @@
+{
+  "gerado_em": "2026-11-16T12:16:00",
+  "modo": "completo",
+  "repeticoes": 1,
+  "linhas_csv": 438771,
+  "centavos_csv": 32477451409,
+  "tempos": [
+    {
+      "pipeline": "ETL",
+      "tempo_total_s": 41.05,
+      "pico_memoria_mb": 839.102,
+      "repeticao": 1
+    },
+    {
+      "pipeline": "ELT",
+      "tempo_total_s": 39.296,
+      "pico_memoria_mb": 134.193,
+      "repeticao": 1
+    }
+  ],
+  "resumo_tempo": [
+    {
+      "pipeline": "ELT",
+      "minimo_s": 39.3,
+      "mediana_s": 39.3,
+      "maximo_s": 39.3,
+      "pico_memoria_mb": 134.19
+    },
+    {
+      "pipeline": "ETL",
+      "minimo_s": 41.05,
+      "mediana_s": 41.05,
+      "maximo_s": 41.05,
+      "pico_memoria_mb": 839.1
+    }
+  ],
+  "caracteristicas": [
+    {
+      "característica": "Onde a transformação roda",
+      "ETL": "Python / pandas (memória)",
+      "ELT": "SQL dentro do SQLite"
+    },
+    {
+      "característica": "Tempo total, mediana (s)",
+      "ETL": "41.05",
+      "ELT": "39.3"
+    },
+    {
+      "característica": "Tempo total, mínimo (s)",
+      "ETL": "41.05",
+      "ELT": "39.3"
+    },
+    {
+      "característica": "Pico de memória do kernel (MB)",
+      "ETL": "839",
+      "ELT": "134"
+    },
+    {
+      "característica": "Tamanho do banco (MB)",
+      "ETL": "54.91",
+      "ELT": "302.96"
+    },
+    {
+      "característica": "Tabelas no banco",
+      "ETL": "6",
+      "ELT": "10"
+    },
+    {
+      "característica": "Guarda o dado bruto no banco",
+      "ETL": "não",
+      "ELT": "sim"
+    },
+    {
+      "característica": "Linhas de código Python no notebook",
+      "ETL": "350",
+      "ELT": "263"
+    },
+    {
+      "característica": "Linhas de SQL de transformação",
+      "ETL": "0",
+      "ELT": "235"
+    },
+    {
+      "característica": "Scripts SQL de transformação",
+      "ETL": "0",
+      "ELT": "7"
+    },
+    {
+      "característica": "Usa pandas",
+      "ETL": "sim",
+      "ELT": "não"
+    }
+  ],
+  "verificacoes": [
+    {
+      "bloco": "4 contagem",
+      "verificacao": "fato do ETL = linhas dos CSVs",
+      "status": "OK",
+      "detalhe": "438,771 vs 438,771"
+    },
+    {
+      "bloco": "4 contagem",
+      "verificacao": "fato do ELT = linhas dos CSVs",
+      "status": "OK",
+      "detalhe": "438,771 vs 438,771"
+    },
+    {
+      "bloco": "4 contagem",
+      "verificacao": "ELT: camada raw (3 tabelas) = linhas dos CSVs",
+      "status": "OK",
+      "detalhe": "438,771 vs 438,771"
+    },
+    {
+      "bloco": "4 contagem",
+      "verificacao": "ELT: staging = linhas dos CSVs",
+      "status": "OK",
+      "detalhe": "438,771 vs 438,771"
+    },
+    {
+      "bloco": "4 contagem",
+      "verificacao": "DIM_TEMPO: mesma quantidade nos dois bancos",
+      "status": "OK",
+      "detalhe": "ETL=1,462 | ELT=1,462"
+    },
+    {
+      "bloco": "4 contagem",
+      "verificacao": "DIM_ORGAO: mesma quantidade nos dois bancos",
+      "status": "OK",
+      "detalhe": "ETL=1,374 | ELT=1,374"
+    },
+    {
+      "bloco": "4 contagem",
+      "verificacao": "DIM_PORTADOR: mesma quantidade nos dois bancos",
+      "status": "OK",
+      "detalhe": "ETL=9,955 | ELT=9,955"
+    },
+    {
+      "bloco": "4 contagem",
+      "verificacao": "DIM_FAVORECIDO: mesma quantidade nos dois bancos",
+      "status": "OK",
+      "detalhe": "ETL=73,665 | ELT=73,665"
+    },
+    {
+      "bloco": "4 contagem",
+      "verificacao": "DIM_TIPO_TRANSACAO: mesma quantidade nos dois bancos",
+      "status": "OK",
+      "detalhe": "ETL=8 | ELT=8"
+    },
+    {
+      "bloco": "5 soma",
+      "verificacao": "soma em centavos: ETL = CSVs",
+      "status": "OK",
+      "detalhe": "32,477,451,409 vs 32,477,451,409"
+    },
+    {
+      "bloco": "5 soma",
+      "verificacao": "soma em centavos: ELT = CSVs",
+      "status": "OK",
+      "detalhe": "32,477,451,409 vs 32,477,451,409"
+    },
+    {
+      "bloco": "5 soma",
+      "verificacao": "soma em centavos: ETL = ELT",
+      "status": "OK",
+      "detalhe": ""
+    },
+    {
+      "bloco": "5 soma",
+      "verificacao": "soma por ano do extrato: CSVs = ETL = ELT",
+      "status": "OK",
+      "detalhe": ""
+    },
+    {
+      "bloco": "6 integridade",
+      "verificacao": "ETL: PRAGMA foreign_key_check sem violações",
+      "status": "OK",
+      "detalhe": "0 violações"
+    },
+    {
+      "bloco": "6 integridade",
+      "verificacao": "ETL: PRAGMA integrity_check ok",
+      "status": "OK",
+      "detalhe": ""
+    },
+    {
+      "bloco": "6 integridade",
+      "verificacao": "ETL: id_data_transacao → DIM_TEMPO sem órfãos",
+      "status": "OK",
+      "detalhe": "0 órfãos"
+    },
+    {
+      "bloco": "6 integridade",
+      "verificacao": "ETL: id_mes_extrato → DIM_TEMPO sem órfãos",
+      "status": "OK",
+      "detalhe": "0 órfãos"
+    },
+    {
+      "bloco": "6 integridade",
+      "verificacao": "ETL: id_orgao → DIM_ORGAO sem órfãos",
+      "status": "OK",
+      "detalhe": "0 órfãos"
+    },
+    {
+      "bloco": "6 integridade",
+      "verificacao": "ETL: id_portador → DIM_PORTADOR sem órfãos",
+      "status": "OK",
+      "detalhe": "0 órfãos"
+    },
+    {
+      "bloco": "6 integridade",
+      "verificacao": "ETL: id_favorecido → DIM_FAVORECIDO sem órfãos",
+      "status": "OK",
+      "detalhe": "0 órfãos"
+    },
+    {
+      "bloco": "6 integridade",
+      "verificacao": "ETL: id_tipo_transacao → DIM_TIPO_TRANSACAO sem órfãos",
+      "status": "OK",
+      "detalhe": "0 órfãos"
+    },
+    {
+      "bloco": "6 integridade",
+      "verificacao": "ELT: PRAGMA foreign_key_check sem violações",
+      "status": "OK",
+      "detalhe": "0 violações"
+    },
+    {
+      "bloco": "6 integridade",
+      "verificacao": "ELT: PRAGMA integrity_check ok",
+      "status": "OK",
+      "detalhe": ""
+    },
+    {
+      "bloco": "6 integridade",
+      "verificacao": "ELT: id_data_transacao → DIM_TEMPO sem órfãos",
+      "status": "OK",
+      "detalhe": "0 órfãos"
+    },
+    {
+      "bloco": "6 integridade",
+      "verificacao": "ELT: id_mes_extrato → DIM_TEMPO sem órfãos",
+      "status": "OK",
+      "detalhe": "0 órfãos"
+    },
+    {
+      "bloco": "6 integridade",
+      "verificacao": "ELT: id_orgao → DIM_ORGAO sem órfãos",
+      "status": "OK",
+      "detalhe": "0 órfãos"
+    },
+    {
+      "bloco": "6 integridade",
+      "verificacao": "ELT: id_portador → DIM_PORTADOR sem órfãos",
+      "status": "OK",
+      "detalhe": "0 órfãos"
+    },
+    {
+      "bloco": "6 integridade",
+      "verificacao": "ELT: id_favorecido → DIM_FAVORECIDO sem órfãos",
+      "status": "OK",
+      "detalhe": "0 órfãos"
+    },
+    {
+      "bloco": "6 integridade",
+      "verificacao": "ELT: id_tipo_transacao → DIM_TIPO_TRANSACAO sem órfãos",
+      "status": "OK",
+      "detalhe": "0 órfãos"
+    }
+  ]
+}
