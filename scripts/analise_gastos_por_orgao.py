@@ -7,7 +7,8 @@ Uso (na raiz do repositório):
     pip install pandas matplotlib
     python scripts/analise_gastos_por_orgao.py [banco.sqlite] [pasta_de_saida]
 
-Valores sem conversão cambial: o total por órgão soma BRL e USD (ver docs).
+Ranking em BRL (compras e saques); USD e valores sigilosos não são somados
+a esse total (ver docs).
 """
 import sqlite3
 import sys
@@ -46,48 +47,46 @@ def abreviar(nome, limite=34):
 
 
 def main():
-    # O arquivo tem 2 consultas: [0] evolução anual por órgão, [1] ranking acumulado.
+    # O arquivo tem 2 consultas: [0] evolução anual por órgão, [1] ranking por moeda (BRL/USD/Nao informada).
     consultas = [p.strip() for p in ARQ_SQL.read_text(encoding="utf-8").split(";") if "SELECT" in p.upper()]
     with sqlite3.connect(BANCO) as con:
         anual, ranking = (pd.read_sql(q, con) for q in consultas)
 
+    ranking_brl = ranking[ranking["moeda_analise"] == "BRL"].sort_values("posicao")
+
     fig, (a1, a2) = plt.subplots(1, 2, figsize=(14, 5.5), facecolor=SUPERFICIE,
                                  gridspec_kw={"width_ratios": [1.25, 1]})
 
-    # (a) Top 10 acumulado: aberto vs sigiloso (R$ milhões, empilhado)
-    r = ranking.iloc[::-1]  # maior no topo
+    # (a) Top 10 órgãos em BRL (compras e saques), acumulado 2023-2025
+    r = ranking_brl.iloc[::-1]  # maior no topo
     y = range(len(r))
-    aberto, sigiloso = r["valor_aberto"] / 1e6, r["valor_sigiloso"] / 1e6
-    a1.barh(y, aberto, color=AZUL, height=0.65, label="Aberto (compra/saque)",
+    a1.barh(y, r["valor_total"] / 1e6, color=AZUL, height=0.65,
             edgecolor=SUPERFICIE, linewidth=1.5)
-    a1.barh(y, sigiloso, left=aberto, color=LARANJA, height=0.65, label="Sigiloso",
-            edgecolor=SUPERFICIE, linewidth=1.5)
-    for i, (total, pct) in enumerate(zip(r["valor_total"] / 1e6, r["percentual_sigiloso"])):
-        a1.text(total + 0.8, i, f"{total:,.1f} mi · {pct:.0f}% sigiloso".replace(",", "."),
+    for i, (total, n) in enumerate(zip(r["valor_total"] / 1e6, r["quantidade_transacoes"])):
+        a1.text(total + 0.8, i, f"{total:,.1f} mi · {n:,} transações".replace(",", "."),
                 va="center", fontsize=8.5, color=TEXTO_2)
     a1.set_yticks(list(y), [abreviar(n) for n in r["nome_orgao_superior"]])
     a1.set_xlim(0, (r["valor_total"] / 1e6).max() * 1.45)
-    estilizar(a1, "10 maiores órgãos superiores, acumulado 2023–2025",
-              "valor registrado (milhões, sem conversão cambial)")
-    a1.legend(frameon=False, loc="lower right", fontsize=9, labelcolor=TEXTO_2)
+    estilizar(a1, "10 maiores órgãos superiores em BRL, acumulado 2023–2025",
+              "valor registrado (milhões)")
 
-    # (b) % sigiloso por ano, só para os órgãos do top 10 com sigilo relevante
-    codigos = ranking.loc[ranking["percentual_sigiloso"] > 0, "codigo_orgao_superior"].head(4)
+    # (b) % de transações sigilosas por ano, para os 4 maiores órgãos em BRL
+    codigos = ranking_brl["codigo_orgao_superior"].head(4)
     for cor, codigo in zip([AZUL, LARANJA, VERDE, ROSA], codigos):
         d = anual[anual["codigo_orgao_superior"] == codigo].sort_values("ano")
-        a2.plot(d["ano"], d["percentual_sigiloso"], color=cor, linewidth=2, marker="o", markersize=6,
+        a2.plot(d["ano"], d["percentual_transacoes_sigilosas"], color=cor, linewidth=2, marker="o", markersize=6,
                 markeredgecolor=SUPERFICIE, markeredgewidth=1.5,
                 label=abreviar(d["nome_orgao_superior"].iloc[0], 26))
     a2.set_xticks([2023, 2024, 2025])
     a2.set_ylim(0, 105)
-    a2.set_ylabel("% do valor do órgão que é sigiloso", color=TEXTO_2, fontsize=9)
-    estilizar(a2, "Parcela sigilosa por ano", grade="y")
+    a2.set_ylabel("% das transações do órgão que são sigilosas", color=TEXTO_2, fontsize=9)
+    estilizar(a2, "Parcela sigilosa por ano (top 4 em BRL)", grade="y")
     a2.legend(frameon=False, loc="center right", fontsize=8.5, labelcolor=TEXTO_2)
 
-    fig.suptitle("CPGF: maiores órgãos e proporção de gastos sigilosos", x=0.01, ha="left",
+    fig.suptitle("CPGF: maiores órgãos em BRL e proporção de transações sigilosas", x=0.01, ha="left",
                  fontsize=13, color=TEXTO, fontweight="bold")
-    fig.text(0.01, 0.01, "Fonte: DW CPGF. Valores somam BRL e USD sem conversão; "
-             "'Outros' (R$ 546) omitido por ser desprezível.", fontsize=8, color=MUDO)
+    fig.text(0.01, 0.01, "Fonte: DW CPGF. Ranking em BRL (compras e saques); USD e valores sigilosos "
+             "não são somados a este total (ver docs).", fontsize=8, color=MUDO)
     fig.tight_layout(rect=(0, 0.04, 1, 0.94))
     SAIDA.mkdir(parents=True, exist_ok=True)
     destino = SAIDA / "analise_gastos_por_orgao.png"
