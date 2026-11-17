@@ -1,37 +1,73 @@
 {
-  "gerado_em": "2026-11-16T12:16:00",
+  "gerado_em": "2026-11-17T19:37:36",
   "modo": "completo",
-  "repeticoes": 1,
+  "repeticoes": 3,
+  "commit": "845707b26a57d74ecdd80d4fa6fed6293771ce75",
+  "sha256_entradas": {
+    "2023_CPGF.csv": "b27b543e0f6c59d796bffc930e6f3d2426635bb486d840b1b6340d0f6330a36a",
+    "2024_CPGF.csv": "bd3fb71c14649923a3f161c4eb0a857aa155102f0288b99461d04a1fdbf41318",
+    "2025_CPGF.csv": "b689ba7d7135d28098811dbd7f8c0ee7c25429309f2ca74056ca773b0acf70b0"
+  },
+  "ambiente": {
+    "python": "3.12.3 (main, Aug 31 2026, 10:18:26) [GCC 13.3.0]",
+    "plataforma": "Linux-6.8.0-147-generic-x86_64-with-glibc2.39",
+    "sqlite": "3.45.1",
+    "pandas": "3.1.1"
+  },
   "linhas_csv": 438771,
   "centavos_csv": 32477451409,
   "tempos": [
     {
       "pipeline": "ETL",
-      "tempo_total_s": 41.05,
-      "pico_memoria_mb": 839.102,
+      "tempo_total_s": 13.662,
+      "pico_memoria_mb": 677.175,
       "repeticao": 1
     },
     {
       "pipeline": "ELT",
-      "tempo_total_s": 39.296,
-      "pico_memoria_mb": 134.193,
+      "tempo_total_s": 15.734,
+      "pico_memoria_mb": 80.466,
       "repeticao": 1
+    },
+    {
+      "pipeline": "ELT",
+      "tempo_total_s": 16.372,
+      "pico_memoria_mb": 80.388,
+      "repeticao": 2
+    },
+    {
+      "pipeline": "ETL",
+      "tempo_total_s": 14.232,
+      "pico_memoria_mb": 678.474,
+      "repeticao": 2
+    },
+    {
+      "pipeline": "ETL",
+      "tempo_total_s": 14.759,
+      "pico_memoria_mb": 677.179,
+      "repeticao": 3
+    },
+    {
+      "pipeline": "ELT",
+      "tempo_total_s": 18.042,
+      "pico_memoria_mb": 80.343,
+      "repeticao": 3
     }
   ],
   "resumo_tempo": [
     {
       "pipeline": "ELT",
-      "minimo_s": 39.3,
-      "mediana_s": 39.3,
-      "maximo_s": 39.3,
-      "pico_memoria_mb": 134.19
+      "minimo_s": 15.73,
+      "mediana_s": 16.37,
+      "maximo_s": 18.04,
+      "pico_memoria_mb": 80.47
     },
     {
       "pipeline": "ETL",
-      "minimo_s": 41.05,
-      "mediana_s": 41.05,
-      "maximo_s": 41.05,
-      "pico_memoria_mb": 839.1
+      "minimo_s": 13.66,
+      "mediana_s": 14.23,
+      "maximo_s": 14.76,
+      "pico_memoria_mb": 678.47
     }
   ],
   "caracteristicas": [
@@ -42,18 +78,18 @@
     },
     {
       "característica": "Tempo total, mediana (s)",
-      "ETL": "41.05",
-      "ELT": "39.3"
+      "ETL": "14.23",
+      "ELT": "16.37"
     },
     {
       "característica": "Tempo total, mínimo (s)",
-      "ETL": "41.05",
-      "ELT": "39.3"
+      "ETL": "13.66",
+      "ELT": "15.73"
     },
     {
       "característica": "Pico de memória do kernel (MB)",
-      "ETL": "839",
-      "ELT": "134"
+      "ETL": "678",
+      "ELT": "80"
     },
     {
       "característica": "Tamanho do banco (MB)",
@@ -265,6 +301,108 @@
       "verificacao": "ELT: id_tipo_transacao → DIM_TIPO_TRANSACAO sem órfãos",
       "status": "OK",
       "detalhe": "0 órfãos"
+    },
+    {
+      "bloco": "6b equivalência",
+      "verificacao": "DIM_TEMPO: mesmos atributos",
+      "status": "OK",
+      "detalhe": ""
+    },
+    {
+      "bloco": "6b equivalência",
+      "verificacao": "DIM_TEMPO: conteúdo sem depender das SKs",
+      "status": "OK",
+      "detalhe": "0 grupos divergentes"
+    },
+    {
+      "bloco": "6b equivalência",
+      "verificacao": "DIM_ORGAO: mesmos atributos",
+      "status": "OK",
+      "detalhe": ""
+    },
+    {
+      "bloco": "6b equivalência",
+      "verificacao": "DIM_ORGAO: conteúdo sem depender das SKs",
+      "status": "OK",
+      "detalhe": "0 grupos divergentes"
+    },
+    {
+      "bloco": "6b equivalência",
+      "verificacao": "DIM_PORTADOR: mesmos atributos",
+      "status": "OK",
+      "detalhe": ""
+    },
+    {
+      "bloco": "6b equivalência",
+      "verificacao": "DIM_PORTADOR: conteúdo sem depender das SKs",
+      "status": "OK",
+      "detalhe": "0 grupos divergentes"
+    },
+    {
+      "bloco": "6b equivalência",
+      "verificacao": "DIM_FAVORECIDO: mesmos atributos",
+      "status": "OK",
+      "detalhe": ""
+    },
+    {
+      "bloco": "6b equivalência",
+      "verificacao": "DIM_FAVORECIDO: conteúdo sem depender das SKs",
+      "status": "OK",
+      "detalhe": "0 grupos divergentes"
+    },
+    {
+      "bloco": "6b equivalência",
+      "verificacao": "DIM_TIPO_TRANSACAO: mesmos atributos",
+      "status": "OK",
+      "detalhe": ""
+    },
+    {
+      "bloco": "6b equivalência",
+      "verificacao": "DIM_TIPO_TRANSACAO: conteúdo sem depender das SKs",
+      "status": "OK",
+      "detalhe": "0 grupos divergentes"
+    },
+    {
+      "bloco": "6b equivalência",
+      "verificacao": "transações: atributos, valores e multiplicidades iguais",
+      "status": "OK",
+      "detalhe": "0 grupos divergentes"
+    },
+    {
+      "bloco": "6b sigilo",
+      "verificacao": "etl: id_data_transacao especial = referência dos CSVs",
+      "status": "OK",
+      "detalhe": "110172 vs 110172"
+    },
+    {
+      "bloco": "6b sigilo",
+      "verificacao": "etl: id_portador especial = referência dos CSVs",
+      "status": "OK",
+      "detalhe": "110172 vs 110172"
+    },
+    {
+      "bloco": "6b sigilo",
+      "verificacao": "etl: marcadores de sigilo respeitam as chaves especiais",
+      "status": "OK",
+      "detalhe": ""
+    },
+    {
+      "bloco": "6b sigilo",
+      "verificacao": "elt: id_data_transacao especial = referência dos CSVs",
+      "status": "OK",
+      "detalhe": "110172 vs 110172"
+    },
+    {
+      "bloco": "6b sigilo",
+      "verificacao": "elt: id_portador especial = referência dos CSVs",
+      "status": "OK",
+      "detalhe": "110172 vs 110172"
+    },
+    {
+      "bloco": "6b sigilo",
+      "verificacao": "elt: marcadores de sigilo respeitam as chaves especiais",
+      "status": "OK",
+      "detalhe": ""
     }
   ]
 }

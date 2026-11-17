@@ -1,7 +1,7 @@
 """Análise 1 — Evolução temporal e sazonalidade de gastos.
 
-Executa as consultas de scripts/sql/queries/01_evolucao_temporal.sql no DW,
-imprime as tabelas e salva o gráfico em docs/analises/01_analise/01_evolucao-temporal.png.
+Executa as consultas de scripts/sql/queries/evolucao_temporal.sql no DW,
+imprime as tabelas e salva o gráfico em docs/analises/01_analise/evolucao-temporal.png.
 
 Uso (na raiz do repositório):
     python -m pip install -r requirements.txt
@@ -24,9 +24,9 @@ import pandas as pd
 from matplotlib.ticker import FuncFormatter
 
 RAIZ = Path(__file__).resolve().parent.parent
-ARQ_SQL = RAIZ / "scripts/sql/queries/01_evolucao_temporal.sql"
+ARQ_SQL = RAIZ / "scripts/sql/queries/evolucao_temporal.sql"
 BANCO = RAIZ / "data/database/cpgf_dw.sqlite"
-SAIDA = RAIZ / "docs/analises/01_analise/01_evolucao-temporal.png"
+SAIDA = RAIZ / "docs/analises/01_analise/evolucao-temporal.png"
 
 # Um ano por cor (ordem fixa) e um marcador por ano, para não depender só da cor.
 ESTILO = {

@@ -2,15 +2,15 @@
 
 Como os gastos do CPGF evoluem de 2023 a 2025 e se existe um padrão que se repete a cada ano.
 
-- Consulta: [01_evolucao_temporal.sql](../../../scripts/sql/queries/01_evolucao_temporal.sql)
-- Script que executa a consulta e gera o gráfico: [analise_evolucao_temporal.py](../../../scripts/analise_evolucao_temporal.py)
+- Consulta: [evolucao_temporal.sql](../scripts/sql/queries/evolucao_temporal.sql)
+- Script que executa a consulta e gera o gráfico: [analise_evolucao_temporal.py](../scripts/analise_evolucao_temporal.py)
 
 ```bash
 python -m pip install -r requirements.txt
 python scripts/analise_evolucao_temporal.py
 ```
 
-![Valor mensal e índice sazonal por ano](01_evolucao-temporal.png)
+![Valor mensal e índice sazonal por ano](analises/01_analise/evolucao-temporal.png)
 
 ## Decisão de método: mês do extrato, não data da transação
 
@@ -43,7 +43,7 @@ O eixo de tempo é `id_mes_extrato`. Cerca de 25% das transações são sigilosa
 
 Execute os comandos acima na raiz do projeto, com a `.venv` ativa. O script abre o banco somente para leitura e interrompe a execução se faltar algum dos 36 meses. Não preenche meses ausentes com zero.
 
-Além do PNG, são geradas as tabelas [mensal](01_evolucao-temporal_mensal.csv), [anual](01_evolucao-temporal_anual.csv) e de [índice sazonal](01_evolucao-temporal_sazonalidade.csv). O arquivo [de identificação da execução](01_evolucao-temporal.json) registra o nome e o SHA-256 do banco, horário de geração e quantidade de transações. Ao trocar a base, regenere os artefatos e revise esta interpretação.
+Além do PNG, são geradas as tabelas [mensal](analises/01_analise/evolucao-temporal_mensal.csv), [anual](analises/01_analise/evolucao-temporal_anual.csv) e de [índice sazonal](analises/01_analise/evolucao-temporal_sazonalidade.csv). O arquivo de identificação da execução `docs/analises/01_analise/evolucao-temporal.json` registra o nome e o SHA-256 do banco, horário de geração e quantidade de transações. Ao trocar a base, regenere os artefatos e revise esta interpretação.
 
 Para usar outro banco sem sobrescrever o gráfico da apresentação:
 

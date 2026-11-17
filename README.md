@@ -12,6 +12,8 @@ Período analisado: 2023, 2024 e 2025.
 
 - [Inspeção dos dados](docs/data-profiling.md): etapas realizadas e instruções da auditoria dos dados.
 
+- [Validação e benchmark ETL × ELT](docs/benchmark-etl-elt.md): execução, verificações de qualidade e interpretação das medições.
+
 ## Estrutura do repositório
 
 ```

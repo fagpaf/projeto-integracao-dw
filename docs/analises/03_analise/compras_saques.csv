@@ -1,0 +1,5 @@
+categoria,canal,grupo_operacao,quantidade_transacoes,valor_total
+Compra,Cartão / Fatura,Exterior (INT$),3429,3513468.74
+Saque,Espécie / Autoatendimento,Exterior (INT$),2059,2245473.89
+Compra,Cartão / Fatura,R$/ATM,285215,146169574.83
+Saque,Espécie / Autoatendimento,R$/ATM,37889,21977164.0

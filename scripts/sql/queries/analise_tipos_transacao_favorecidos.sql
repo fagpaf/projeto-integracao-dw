@@ -1,11 +1,12 @@
--- Comparacao entre compras e saques por moeda
+-- Recorte 2023–2025. INT$ indica exterior, não USD. Ver docs/interpretacao-moedas-cpgf.md.
+-- Valores somados em centavos; grupos de operação não equivalem a moedas confirmadas.
 
 SELECT
     tt.categoria,
     tt.canal,
-    tt.moeda,
+    (CASE WHEN tt.descricao_original LIKE '%INT$%' THEN 'Exterior (INT$)' WHEN tt.descricao_original LIKE '%R$%' OR tt.descricao_original = 'SAQUE CASH/ATM BB' THEN 'R$/ATM' ELSE 'Sem identificação' END) AS grupo_operacao,
     COUNT(*) AS quantidade_transacoes,
-    ROUND(SUM(f.valor_transacao), 2) AS valor_total
+    ROUND(SUM(CAST(ROUND(f.valor_transacao * 100) AS INTEGER)) / 100.0, 2) AS valor_total
 
 FROM FATO_TRANSACAO_CPGF f
 
@@ -13,28 +14,28 @@ JOIN DIM_TIPO_TRANSACAO tt
     ON f.id_tipo_transacao = tt.id_tipo_transacao
 
 WHERE tt.categoria IN ('Compra', 'Saque')
+  AND f.id_mes_extrato IN (SELECT id_tempo FROM DIM_TEMPO WHERE ano BETWEEN 2023 AND 2025)
 
 GROUP BY
     tt.categoria,
     tt.canal,
-    tt.moeda
+    (CASE WHEN tt.descricao_original LIKE '%INT$%' THEN 'Exterior (INT$)' WHEN tt.descricao_original LIKE '%R$%' OR tt.descricao_original = 'SAQUE CASH/ATM BB' THEN 'R$/ATM' ELSE 'Sem identificação' END)
 
 ORDER BY
-    tt.moeda,
+    (CASE WHEN tt.descricao_original LIKE '%INT$%' THEN 'Exterior (INT$)' WHEN tt.descricao_original LIKE '%R$%' OR tt.descricao_original = 'SAQUE CASH/ATM BB' THEN 'R$/ATM' ELSE 'Sem identificação' END),
     tt.categoria;
 
--- Ranking dos 10 maiores favorecidos em BRL. Considera apenas pessoas fisicas e juridicas identificadas.
 
 WITH gastos_por_favorecido AS (
     SELECT
         fav.id_favorecido,
         fav.nome_favorecido,
         fav.tipo_pessoa,
-        tt.moeda,
+        (CASE WHEN tt.descricao_original LIKE '%INT$%' THEN 'Exterior (INT$)' WHEN tt.descricao_original LIKE '%R$%' OR tt.descricao_original = 'SAQUE CASH/ATM BB' THEN 'R$/ATM' ELSE 'Sem identificação' END) AS grupo_operacao,
 
         COUNT(*) AS quantidade_transacoes,
 
-        SUM(f.valor_transacao) AS valor_total
+        SUM(CAST(ROUND(f.valor_transacao * 100) AS INTEGER)) / 100.0 AS valor_total
 
     FROM FATO_TRANSACAO_CPGF f
 
@@ -45,14 +46,15 @@ WITH gastos_por_favorecido AS (
         ON f.id_tipo_transacao = tt.id_tipo_transacao
 
     WHERE tt.categoria IN ('Compra', 'Saque')
+  AND f.id_mes_extrato IN (SELECT id_tempo FROM DIM_TEMPO WHERE ano BETWEEN 2023 AND 2025)
       AND fav.tipo_pessoa IN ('PJ', 'PF')
-      AND tt.moeda = 'BRL'
+      AND (CASE WHEN tt.descricao_original LIKE '%INT$%' THEN 'Exterior (INT$)' WHEN tt.descricao_original LIKE '%R$%' OR tt.descricao_original = 'SAQUE CASH/ATM BB' THEN 'R$/ATM' ELSE 'Sem identificação' END) = 'R$/ATM'
 
     GROUP BY
         fav.id_favorecido,
         fav.nome_favorecido,
         fav.tipo_pessoa,
-        tt.moeda
+        (CASE WHEN tt.descricao_original LIKE '%INT$%' THEN 'Exterior (INT$)' WHEN tt.descricao_original LIKE '%R$%' OR tt.descricao_original = 'SAQUE CASH/ATM BB' THEN 'R$/ATM' ELSE 'Sem identificação' END)
 ),
 
 concentracao AS (
@@ -86,15 +88,14 @@ WHERE ranking <= 10
 
 ORDER BY ranking;
 
--- Distribuicao das transacoes por moeda e tipo de favorecido. 
 SELECT
-    tt.moeda,
+    (CASE WHEN tt.descricao_original LIKE '%INT$%' THEN 'Exterior (INT$)' WHEN tt.descricao_original LIKE '%R$%' OR tt.descricao_original = 'SAQUE CASH/ATM BB' THEN 'R$/ATM' ELSE 'Sem identificação' END) AS grupo_operacao,
     fav.tipo_pessoa,
 
     COUNT(*) AS quantidade_transacoes,
 
     ROUND(
-        SUM(f.valor_transacao),
+        SUM(CAST(ROUND(f.valor_transacao * 100) AS INTEGER)) / 100.0,
         2
     ) AS valor_total
 
@@ -107,11 +108,12 @@ JOIN DIM_TIPO_TRANSACAO tt
     ON f.id_tipo_transacao = tt.id_tipo_transacao
 
 WHERE tt.categoria IN ('Compra', 'Saque')
+  AND f.id_mes_extrato IN (SELECT id_tempo FROM DIM_TEMPO WHERE ano BETWEEN 2023 AND 2025)
 
 GROUP BY
-    tt.moeda,
+    (CASE WHEN tt.descricao_original LIKE '%INT$%' THEN 'Exterior (INT$)' WHEN tt.descricao_original LIKE '%R$%' OR tt.descricao_original = 'SAQUE CASH/ATM BB' THEN 'R$/ATM' ELSE 'Sem identificação' END),
     fav.tipo_pessoa
 
 ORDER BY
-    tt.moeda,
+    (CASE WHEN tt.descricao_original LIKE '%INT$%' THEN 'Exterior (INT$)' WHEN tt.descricao_original LIKE '%R$%' OR tt.descricao_original = 'SAQUE CASH/ATM BB' THEN 'R$/ATM' ELSE 'Sem identificação' END),
     fav.tipo_pessoa;

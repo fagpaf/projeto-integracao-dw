@@ -1,64 +1,33 @@
-# Análise de gastos por órgão e proporção de despesas sigilosas
+# Análise 2 — Órgãos e sigilo
 
-## Objetivo
+## Objetivo e recorte
 
-Analisar os maiores órgãos gastadores no período de 2023 a 2025 e comparar, em cada ano, a proporção dos valores classificados como **abertos**, **sigilosos** e **não classificados**.
+O [SQL](../scripts/sql/queries/analise_gastos_por_orgao.sql) analisa 2023–2025 pelo ano do extrato e agrupa as unidades pelo código e nome do órgão superior.
 
-A análise utiliza a dimensão `DIM_ORGAO` para identificar os órgãos e seus níveis hierárquicos, e a dimensão `DIM_TEMPO` para agrupar os valores por ano.
+O ranking exibido considera somente compras e saques do grupo operacional R$/ATM. **Exclui transações sigilosas, INT$ e Outros; não é um ranking do gasto total.** Os quatro órgãos usados no painel temporal são selecionados nesse mesmo ranking.
 
-## Arquivo SQL relacionado
+O indicador de sigilo é `quantidade de transações sigilosas / quantidade total de transações do órgão no ano × 100`. O denominador inclui abertas, sigilosas e não classificadas. **Não é participação no valor financeiro.** Uma transação de valor alto pesa tanto quanto uma de valor baixo nesse percentual.
 
-` scripts/sql/queries/analise_gastos_por_orgao.sql `
+A categoria de sigilo é a registrada em `DIM_TIPO_TRANSACAO`. Essa interpretação deve acompanhar a legenda em qualquer apresentação.
 
-Esse arquivo contém duas consultas complementares:
+## Moedas e valores
 
-1. **Evolução anual por órgão superior:** aapresenta os valores de compras e saques separados por BRL e USD, os valores sigilosos sem moeda informada e os valores da categoria Outros. Também apresenta a quantidade e o percentual de transações abertas, sigilosas e não classificadas.
-2. **Ranking acumulado dos dez maiores órgãos:** apresenta rankings independentes para BRL, USD e valores sigilosos cuja moeda não foi informada.
+As consultas não usam o atributo legado `moeda`. INT$ identifica exterior, não USD comprovado. Consulte a [evidência e decisão metodológica](interpretacao-moedas-cpgf.md). As somas são realizadas em centavos antes da apresentação decimal, sem conversão cambial.
 
-## Decisões metodológicas
+## Execução e resultados
 
-### 1. Agrupamento por órgão superior
+Na raiz do projeto, com pandas e matplotlib instalados:
 
-A dimensão de órgãos representa uma hierarquia organizacional. Um órgão pode conter unidades subordinadas, então agrupar apenas pelo órgão/unidade poderia fragmentar os gastos de uma mesma estrutura administrativa.
+```bash
+python scripts/analise_gastos_por_orgao.py
+```
 
-Por isso, a análise agrupa os registros por **código e nome do órgão superior**. Assim, os gastos das unidades vinculadas são consolidados no nível superior, permitindo uma comparação mais abrangente entre ministérios e demais estruturas.
+O banco padrão é `data/database/cpgf_dw.sqlite`, aberto somente para leitura. É possível informar outro banco e pasta como argumentos posicionais.
 
-### 2. Classificação dos gastos
+Saídas em `docs/analises/02_analise/`:
 
-A classificação utiliza a categoria registrada em `DIM_TIPO_TRANSACAO`:
+- `analise_gastos_por_orgao.png`: ranking restrito e evolução do percentual da quantidade sigilosa.
+- `gastos_por_orgao_anual.csv`: todas as linhas da consulta anual, incluindo os valores por grupo.
+- `gastos_por_orgao_ranking.csv`: rankings separados por grupo operacional.
 
-- **Abertos:** categorias `Compra` e `Saque`.
-- **Sigilosos:** categoria `Sigiloso`.
-- **Não classificados:** categoria `Outros`.
-
-A categoria `Outros` foi mantida separada. Ela não deve ser somada automaticamente aos gastos abertos ou sigilosos, pois representa registros que não se encaixam nessas duas classificações.
-
-### 3. Uso do mês do extrato para identificar o ano
-
-O ano da análise é obtido a partir de `id_mes_extrato`, relacionado a `DIM_TEMPO`, e não da data individual da transação.
-
-Essa escolha é importante porque transações protegidas por sigilo podem apresentar `id_data_transacao = -1`, já que a data exata não está disponível. O mês do extrato continua sendo uma referência temporal utilizável para agrupar esses registros.
-
-### 4. Percentuais da evolução anual
-Como a moeda dos registros sigilosos não está informada, não é correto calcular o percentual do valor sigiloso sobre um total monetário que misture BRL e USD.
-
-Por isso, a consulta anual calcula os percentuais de transações abertas, sigilosas e não classificadas com base na quantidade de transações de cada grupo em relação à quantidade total de transações daquele órgão superior naquele ano.
-
-Os valores monetários são apresentados separadamente por grupo de moeda, sem calcular uma proporção monetária entre gastos abertos e sigilosos.
-
-### 5. Separação por moeda
-As consultas não somam valores em BRL e USD como se fossem uma única moeda.
-- BRL: valores de compras e saques cuja moeda está identificada como real.
-- USD: valores de compras e saques cuja moeda está identificada como dólar.
-- Moeda não informada: valores de transações classificadas como Sigiloso, pois esses registros não apresentam identificação da moeda na dimensão.
-A categoria Outros é apresentada separadamente como não aplicável, conforme o valor de moeda registrado na dimensão.
-
-Essa separação evita atribuir uma moeda sem evidência na fonte e impede que valores em reais e dólares sejam somados em um único total.
-
-## Por que as duas consultas são complementares?
-
-A consulta anual mostra como a quantidade de transações abertas, sigilosas e não classificadas se distribui em cada órgão ao longo de 2023 a 2025, além de apresentar os valores separados por moeda.
-
-Já os rankings mostram quais órgãos têm os maiores valores registrados em BRL, USD e transações sigilosas sem moeda informada.
-
-Dessa forma, as consultas permitem analisar o volume e a composição das transações sem misturar moedas ou atribuir uma moeda não identificada aos registros sigilosos.
+A ausência de um órgão no gráfico não significa gasto baixo no total: ele pode concentrar despesas nos grupos excluídos. A consulta também não mede irregularidade nem avalia a justificativa legal do sigilo.
