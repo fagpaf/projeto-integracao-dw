@@ -12,8 +12,8 @@ A análise utiliza a dimensão `DIM_ORGAO` para identificar os órgãos e seus n
 
 Esse arquivo contém duas consultas complementares:
 
-1. **Evolução anual por órgão superior:** apresenta os valores e percentuais de gastos abertos, sigilosos e não classificados para cada órgão superior em cada ano.
-2. **Ranking acumulado dos dez maiores órgãos:** identifica os dez órgãos superiores com maiores valores acumulados no período de 2023 a 2025 e apresenta a divisão entre gastos abertos, sigilosos e não classificados.
+1. **Evolução anual por órgão superior:** aapresenta os valores de compras e saques separados por BRL e USD, os valores sigilosos sem moeda informada e os valores da categoria Outros. Também apresenta a quantidade e o percentual de transações abertas, sigilosas e não classificadas.
+2. **Ranking acumulado dos dez maiores órgãos:** apresenta rankings independentes para BRL, USD e valores sigilosos cuja moeda não foi informada.
 
 ## Decisões metodológicas
 
@@ -39,46 +39,26 @@ O ano da análise é obtido a partir de `id_mes_extrato`, relacionado a `DIM_TEM
 
 Essa escolha é importante porque transações protegidas por sigilo podem apresentar `id_data_transacao = -1`, já que a data exata não está disponível. O mês do extrato continua sendo uma referência temporal utilizável para agrupar esses registros.
 
-### 4. Percentuais calculados dentro de cada órgão e ano
+### 4. Percentuais da evolução anual
+Como a moeda dos registros sigilosos não está informada, não é correto calcular o percentual do valor sigiloso sobre um total monetário que misture BRL e USD.
 
-Na consulta anual, os percentuais são calculados em relação ao valor total daquele órgão superior naquele ano. Dessa forma, é possível comparar a composição dos gastos de um órgão ao longo do tempo, mesmo quando o volume total varia.
+Por isso, a consulta anual calcula os percentuais de transações abertas, sigilosas e não classificadas com base na quantidade de transações de cada grupo em relação à quantidade total de transações daquele órgão superior naquele ano.
 
-Na consulta do ranking, a divisão entre aberto, sigiloso e não classificado é calculada sobre o total acumulado de cada órgão no período analisado.
+Os valores monetários são apresentados separadamente por grupo de moeda, sem calcular uma proporção monetária entre gastos abertos e sigilosos.
 
-### 5. Valores monetários e moedas
+### 5. Separação por moeda
+As consultas não somam valores em BRL e USD como se fossem uma única moeda.
+- BRL: valores de compras e saques cuja moeda está identificada como real.
+- USD: valores de compras e saques cuja moeda está identificada como dólar.
+- Moeda não informada: valores de transações classificadas como Sigiloso, pois esses registros não apresentam identificação da moeda na dimensão.
+A categoria Outros é apresentada separadamente como não aplicável, conforme o valor de moeda registrado na dimensão.
 
-Os valores são somados conforme estão registrados na base. Não é realizada conversão cambial entre BRL e USD.
-
-Portanto, caso existam valores em moedas diferentes dentro do mesmo agrupamento, o total numérico não deve ser interpretado como um valor financeiro convertido para uma moeda única. A análise de proporções também deve ser interpretada considerando essa limitação.
-
-## Principais resultados observados
-
-O ranking acumulado identificou, entre os dez maiores órgãos superiores:
-
-1. Ministério da Justiça e Segurança Pública — 94.286.292,01 em valores numéricos registrados.
-2. Presidência da República — 74.071.334,32.
-3. Ministério da Defesa — 43.256.761,57.
-4. Ministério da Educação — 34.827.106,00.
-5. Ministério do Planejamento e Orçamento — 23.471.705,18.
-6. Ministério do Meio Ambiente e Mudança do Clima — 9.926.519,45.
-7. Ministério da Fazenda — 9.075.553,77.
-8. Ministério da Saúde — 5.814.226,76.
-9. Ministério do Desenvolvimento Agrário e Agricultura Familiar — 5.443.666,53.
-10. Ministério da Agricultura e Pecuária — 5.253.682,03.
-
-**Atenção:** esses valores representam os números armazenados na base, sem conversão de USD para BRL. Não devem ser apresentados como um total consolidado em reais caso incluam valores em dólar.
-
-A comparação anual também mostrou diferenças relevantes na composição dos gastos. Por exemplo:
-
-- No Ministério da Justiça e Segurança Pública, a participação dos gastos sigilosos foi de 80,12% em 2023, 82,25% em 2024 e 76,75% em 2025.
-- Na Presidência da República, a participação sigilosa ficou próxima de 99% nos três anos.
-- No Ministério da Defesa, a participação sigilosa foi pequena: aproximadamente 0,15% em 2023, 0,11% em 2024 e 0,08% em 2025.
-- No Ministério da Fazenda, a participação sigilosa passou de 26,95% em 2023 para 28,44% em 2024 e 31,00% em 2025.
-
-Esses resultados ajudam a observar não apenas quais órgãos apresentam maiores valores registrados, mas também como a composição entre gastos abertos e sigilosos varia entre órgãos e ao longo dos anos.
+Essa separação evita atribuir uma moeda sem evidência na fonte e impede que valores em reais e dólares sejam somados em um único total.
 
 ## Por que as duas consultas são complementares?
 
-A consulta anual permite acompanhar a evolução da composição dos gastos de cada órgão entre 2023 e 2025. Já o ranking acumulado oferece uma visão geral dos órgãos com maiores valores no conjunto dos três anos.
+A consulta anual mostra como a quantidade de transações abertas, sigilosas e não classificadas se distribui em cada órgão ao longo de 2023 a 2025, além de apresentar os valores separados por moeda.
 
-Assim, uma consulta responde **como a composição dos gastos mudou ao longo do tempo**, enquanto a outra responde **quais órgãos concentram os maiores valores registrados no período**.
+Já os rankings mostram quais órgãos têm os maiores valores registrados em BRL, USD e transações sigilosas sem moeda informada.
+
+Dessa forma, as consultas permitem analisar o volume e a composição das transações sem misturar moedas ou atribuir uma moeda não identificada aos registros sigilosos.

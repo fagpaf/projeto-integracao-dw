@@ -1,5 +1,4 @@
-
--- Analise da proporcao de gastos abertos, sigilosos e nao classificados por orgao superior e ano (2023 a 2025). Os valores representam os registros originais, sem conversao de moeda.
+-- Analise anual dos gastos por orgao superior (2023 a 2025). Os valores sao separados por moeda: BRL e USD para compras/saques, "Nao informada" para transacoes sigilosas. Os percentuais representam quantidade de transacoes, nao valor monetario, pois a moeda das transacoes sigilosas nao esta identificada na fonte.
 
 WITH gastos_por_orgao AS (
     SELECT
@@ -9,20 +8,42 @@ WITH gastos_por_orgao AS (
 
         SUM(CASE
             WHEN tt.categoria IN ('Compra', 'Saque')
+             AND tt.moeda = 'BRL'
             THEN f.valor_transacao ELSE 0
-        END) AS valor_aberto,
+        END) AS valor_aberto_brl,
+
+        SUM(CASE
+            WHEN tt.categoria IN ('Compra', 'Saque')
+             AND tt.moeda = 'USD'
+            THEN f.valor_transacao ELSE 0
+        END) AS valor_aberto_usd,
 
         SUM(CASE
             WHEN tt.categoria = 'Sigiloso'
             THEN f.valor_transacao ELSE 0
-        END) AS valor_sigiloso,
+        END) AS valor_sigiloso_moeda_nao_informada,
 
         SUM(CASE
             WHEN tt.categoria = 'Outros'
             THEN f.valor_transacao ELSE 0
-        END) AS valor_nao_classificado,
+        END) AS valor_nao_classificado_moeda_nao_aplicavel,
 
-        SUM(f.valor_transacao) AS valor_total
+        COUNT(*) AS quantidade_total_transacoes,
+
+        SUM(CASE
+            WHEN tt.categoria IN ('Compra', 'Saque')
+            THEN 1 ELSE 0
+        END) AS quantidade_transacoes_abertas,
+
+        SUM(CASE
+            WHEN tt.categoria = 'Sigiloso'
+            THEN 1 ELSE 0
+        END) AS quantidade_transacoes_sigilosas,
+
+        SUM(CASE
+            WHEN tt.categoria = 'Outros'
+            THEN 1 ELSE 0
+        END) AS quantidade_transacoes_nao_classificadas
 
     FROM FATO_TRANSACAO_CPGF f
     JOIN DIM_ORGAO o
@@ -44,46 +65,51 @@ SELECT
     ano,
     codigo_orgao_superior,
     nome_orgao_superior,
-    ROUND(valor_aberto, 2) AS valor_aberto,
-    ROUND(valor_sigiloso, 2) AS valor_sigiloso,
-    ROUND(valor_nao_classificado, 2) AS valor_nao_classificado,
-    ROUND(valor_total, 2) AS valor_total,
 
-    ROUND(100.0 * valor_aberto / NULLIF(valor_total, 0), 2)
-        AS percentual_aberto,
+    ROUND(valor_aberto_brl, 2) AS valor_aberto_brl,
+    ROUND(valor_aberto_usd, 2) AS valor_aberto_usd,
+    ROUND(valor_sigiloso_moeda_nao_informada, 2)
+        AS valor_sigiloso_moeda_nao_informada,
+    ROUND(valor_nao_classificado_moeda_nao_aplicavel, 2)
+        AS valor_nao_classificado_moeda_nao_aplicavel,
 
-    ROUND(100.0 * valor_sigiloso / NULLIF(valor_total, 0), 2)
-        AS percentual_sigiloso,
+    quantidade_total_transacoes,
+    quantidade_transacoes_abertas,
+    quantidade_transacoes_sigilosas,
+    quantidade_transacoes_nao_classificadas,
 
-    ROUND(100.0 * valor_nao_classificado / NULLIF(valor_total, 0), 2)
-        AS percentual_nao_classificado
+    ROUND(
+        100.0 * quantidade_transacoes_abertas
+        / NULLIF(quantidade_total_transacoes, 0), 2
+    ) AS percentual_transacoes_abertas,
+
+    ROUND(
+        100.0 * quantidade_transacoes_sigilosas
+        / NULLIF(quantidade_total_transacoes, 0), 2
+    ) AS percentual_transacoes_sigilosas,
+
+    ROUND(
+        100.0 * quantidade_transacoes_nao_classificadas
+        / NULLIF(quantidade_total_transacoes, 0), 2
+    ) AS percentual_transacoes_nao_classificadas
 
 FROM gastos_por_orgao
+ORDER BY ano, nome_orgao_superior;
 
-ORDER BY ano, valor_total DESC;
 
--- Ranking dos 10 orgaos superiores com maior gasto acumulado entre 2023 e 2025, incluindo a proporcao de gastos sigilosos. Valores sem conversao de moeda.
+-- Ranking dos 10 maiores orgaos superiores em cada grupo monetario no periodo de 2023 a 2025. BRL e USD consideram compras/saques, "Nao informada" considera sigilosos. Os rankings sao separados para nao somar moedas diferentes.
 
-WITH gastos_acumulados AS (
+WITH gastos_por_orgao_moeda AS (
     SELECT
         o.codigo_orgao_superior,
         o.nome_orgao_superior,
 
-        SUM(CASE
-            WHEN tt.categoria IN ('Compra', 'Saque')
-            THEN f.valor_transacao ELSE 0
-        END) AS valor_aberto,
+        CASE
+            WHEN tt.categoria = 'Sigiloso' THEN 'Nao informada'
+            ELSE tt.moeda
+        END AS moeda_analise,
 
-        SUM(CASE
-            WHEN tt.categoria = 'Sigiloso'
-            THEN f.valor_transacao ELSE 0
-        END) AS valor_sigiloso,
-
-        SUM(CASE
-            WHEN tt.categoria = 'Outros'
-            THEN f.valor_transacao ELSE 0
-        END) AS valor_nao_classificado,
-
+        COUNT(*) AS quantidade_transacoes,
         SUM(f.valor_transacao) AS valor_total
 
     FROM FATO_TRANSACAO_CPGF f
@@ -95,27 +121,41 @@ WITH gastos_acumulados AS (
         ON f.id_tipo_transacao = tt.id_tipo_transacao
 
     WHERE t.ano BETWEEN 2023 AND 2025
+      AND tt.categoria IN ('Compra', 'Saque', 'Sigiloso')
 
     GROUP BY
         o.codigo_orgao_superior,
-        o.nome_orgao_superior
+        o.nome_orgao_superior,
+        CASE
+            WHEN tt.categoria = 'Sigiloso' THEN 'Nao informada'
+            ELSE tt.moeda
+        END
+),
+
+ranking AS (
+    SELECT
+        moeda_analise,
+        codigo_orgao_superior,
+        nome_orgao_superior,
+        quantidade_transacoes,
+        valor_total,
+
+        ROW_NUMBER() OVER (
+            PARTITION BY moeda_analise
+            ORDER BY valor_total DESC
+        ) AS posicao
+
+    FROM gastos_por_orgao_moeda
 )
 
 SELECT
+    moeda_analise,
+    posicao,
     codigo_orgao_superior,
     nome_orgao_superior,
-    ROUND(valor_aberto, 2) AS valor_aberto,
-    ROUND(valor_sigiloso, 2) AS valor_sigiloso,
-    ROUND(valor_nao_classificado, 2) AS valor_nao_classificado,
-    ROUND(valor_total, 2) AS valor_total,
+    quantidade_transacoes,
+    ROUND(valor_total, 2) AS valor_total
 
-    ROUND(100.0 * valor_aberto / NULLIF(valor_total, 0), 2)
-        AS percentual_aberto,
-
-    ROUND(100.0 * valor_sigiloso / NULLIF(valor_total, 0), 2)
-        AS percentual_sigiloso
-
-FROM gastos_acumulados
-
-ORDER BY valor_total DESC
-LIMIT 10;
+FROM ranking
+WHERE posicao <= 10
+ORDER BY moeda_analise, posicao;
