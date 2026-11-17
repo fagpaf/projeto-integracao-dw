@@ -1,0 +1,5 @@
+grupo_operacao,tipo_pessoa,quantidade_transacoes,valor_total
+Exterior (INT$),Especial,5488,5758942.63
+R$/ATM,Especial,53308,33426882.87
+R$/ATM,PF,13077,9613152.8
+R$/ATM,PJ,256719,125106703.16

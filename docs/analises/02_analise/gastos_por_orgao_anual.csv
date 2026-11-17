@@ -1,0 +1,92 @@
+ano,codigo_orgao_superior,nome_orgao_superior,valor_aberto_rs_atm,valor_aberto_exterior,valor_sigiloso,valor_nao_classificado,quantidade_total_transacoes,quantidade_transacoes_abertas,quantidade_transacoes_sigilosas,quantidade_transacoes_nao_classificadas,percentual_transacoes_abertas,percentual_transacoes_sigilosas,percentual_transacoes_nao_classificadas
+2023,63000,Advocacia-Geral da União,288026.74,396.8,0.0,0.0,866,866,0,0,100.0,0.0,0.0
+2023,25201,Banco Central do Brasil - Orçamento Fiscal e,439714.36,9108.77,0.0,0.0,1132,1132,0,0,100.0,0.0,0.0
+2023,37000,Controladoria-Geral da União,60937.93,766.3,0.0,0.0,91,91,0,0,100.0,0.0,0.0
+2023,22000,Ministério da Agricultura e Pecuária,1608766.94,9226.63,0.0,0.0,4218,4218,0,0,100.0,0.0,0.0
+2023,24000,"Ministério da Ciência, Tecnologia e Inovaç",823045.26,2722.23,0.0,0.0,2635,2635,0,0,100.0,0.0,0.0
+2023,42000,Ministério da Cultura,240624.87,0.0,0.0,0.0,605,605,0,0,100.0,0.0,0.0
+2023,52000,Ministério da Defesa,7386356.64,161560.62,11108.01,0.0,15280,15233,47,0,99.69,0.31,0.0
+2023,26000,Ministério da Educação,8406035.88,3773.11,0.0,0.0,21834,21834,0,0,100.0,0.0,0.0
+2023,25000,Ministério da Fazenda,2066567.15,3518.47,763630.0,0.0,4732,3878,854,0,81.95,18.05,0.0
+2023,46000,Ministério da Gestão e da Inovação em Ser,501495.06,2175.46,0.0,0.0,1773,1773,0,0,100.0,0.0,0.0
+2023,53000,Ministério da Integração e do Desenvolvime,560451.29,0.0,0.0,0.0,1880,1880,0,0,100.0,0.0,0.0
+2023,30000,Ministério da Justiça e Segurança Pública,3935720.43,1018145.05,19965861.58,0.0,26413,6570,19843,0,24.87,75.13,0.0
+2023,58000,Ministério da Pesca e Aquicultura,6635.4,399.31,0.0,0.0,8,8,0,0,100.0,0.0,0.0
+2023,33000,Ministério da Previdência Social,41117.89,0.0,0.0,0.0,126,126,0,0,100.0,0.0,0.0
+2023,36000,Ministério da Saúde,1793110.74,0.0,0.0,0.0,3926,3926,0,0,100.0,0.0,0.0
+2023,56000,Ministério das Cidades,280196.25,0.0,0.0,0.0,448,448,0,0,100.0,0.0,0.0
+2023,41000,Ministério das Comunicações,90791.77,2153.75,0.0,0.0,169,169,0,0,100.0,0.0,0.0
+2023,35000,Ministério das Relações Exteriores,178359.62,1137.28,0.0,0.0,389,389,0,0,100.0,0.0,0.0
+2023,32000,Ministério de Minas e Energia,882283.21,1080.0,0.0,0.0,1768,1768,0,0,100.0,0.0,0.0
+2023,68000,Ministério de Portos e Aeroportos,37788.17,0.0,0.0,0.0,65,65,0,0,100.0,0.0,0.0
+2023,49000,Ministério do Desenvolvimento Agrário e Agr,1199936.78,511.48,0.0,0.0,3740,3740,0,0,100.0,0.0,0.0
+2023,28000,"Ministério do Desenvolvimento, Indústria, C",170764.27,0.0,0.0,0.0,462,462,0,0,100.0,0.0,0.0
+2023,44000,Ministério do Meio Ambiente e Mudança do Cl,3371050.9,0.0,0.0,0.0,3701,3701,0,0,100.0,0.0,0.0
+2023,47000,Ministério do Planejamento e Orçamento,8851242.1,670.48,0.0,0.0,21485,21485,0,0,100.0,0.0,0.0
+2023,38000,Ministério do Trabalho e Emprego,22597.39,0.0,0.0,0.0,94,94,0,0,100.0,0.0,0.0
+2023,40000,Ministério do Trabalho e Emprego,976083.18,605.71,0.0,0.0,2885,2885,0,0,100.0,0.0,0.0
+2023,54000,Ministério do Turismo,9190.73,0.0,0.0,0.0,37,37,0,0,100.0,0.0,0.0
+2023,81000,Ministério dos Direitos Humanos e Cidadania,24238.05,0.0,0.0,0.0,27,27,0,0,100.0,0.0,0.0
+2023,39000,Ministério dos Transportes,190771.19,0.0,0.0,0.0,737,737,0,0,100.0,0.0,0.0
+2023,20000,Presidência da República,144684.53,105600.8,24064474.23,0.0,12596,1116,11480,0,8.86,91.14,0.0
+2024,63000,Advocacia-Geral da União,242589.31,915.33,0.0,0.0,699,699,0,0,100.0,0.0,0.0
+2024,25201,Banco Central do Brasil - Orçamento Fiscal e,532521.33,17229.84,0.0,0.0,1188,1188,0,0,100.0,0.0,0.0
+2024,37000,Controladoria-Geral da União,63416.54,0.0,0.0,0.0,74,74,0,0,100.0,0.0,0.0
+2024,22000,Ministério da Agricultura e Pecuária,1752385.12,4332.54,0.0,0.0,3911,3911,0,0,100.0,0.0,0.0
+2024,24000,"Ministério da Ciência, Tecnologia e Inovaç",976752.08,615.6,0.0,1300.0,2826,2825,0,1,99.96,0.0,0.04
+2024,42000,Ministério da Cultura,395523.77,188.66,0.0,0.0,773,773,0,0,100.0,0.0,0.0
+2024,52000,Ministério da Defesa,15763753.58,319932.41,17385.1,0.0,23009,22934,75,0,99.67,0.33,0.0
+2024,26000,Ministério da Educação,11422127.69,10248.02,0.0,0.0,23785,23785,0,0,100.0,0.0,0.0
+2024,25000,Ministério da Fazenda,2384022.0,13977.34,952850.0,0.0,5082,4372,710,0,86.03,13.97,0.0
+2024,46000,Ministério da Gestão e da Inovação em Ser,495901.18,0.0,0.0,0.0,1399,1399,0,0,100.0,0.0,0.0
+2024,53000,Ministério da Integração e do Desenvolvime,602653.14,0.0,0.0,0.0,1754,1754,0,0,100.0,0.0,0.0
+2024,30000,Ministério da Justiça e Segurança Pública,4599265.17,1480419.73,28163212.8,0.0,34050,6711,27339,0,19.71,80.29,0.0
+2024,58000,Ministério da Pesca e Aquicultura,11733.2,462.06,0.0,0.0,7,7,0,0,100.0,0.0,0.0
+2024,33000,Ministério da Previdência Social,68009.02,0.0,0.0,0.0,148,148,0,0,100.0,0.0,0.0
+2024,36000,Ministério da Saúde,1735719.73,5245.83,0.0,0.0,3301,3301,0,0,100.0,0.0,0.0
+2024,56000,Ministério das Cidades,265163.37,0.0,0.0,0.0,442,442,0,0,100.0,0.0,0.0
+2024,41000,Ministério das Comunicações,85104.75,3200.93,0.0,0.0,156,156,0,0,100.0,0.0,0.0
+2024,35000,Ministério das Relações Exteriores,131338.53,0.0,0.0,0.0,253,253,0,0,100.0,0.0,0.0
+2024,32000,Ministério de Minas e Energia,1109764.26,6366.63,0.0,0.0,2337,2337,0,0,100.0,0.0,0.0
+2024,68000,Ministério de Portos e Aeroportos,63540.36,0.0,0.0,0.0,101,101,0,0,100.0,0.0,0.0
+2024,49000,Ministério do Desenvolvimento Agrário e Agr,1684084.52,528.85,0.0,0.0,4850,4850,0,0,100.0,0.0,0.0
+2024,55000,Ministério do Desenvolvimento e Assistência,0.0,39916.3,0.0,0.0,3,3,0,0,100.0,0.0,0.0
+2024,28000,"Ministério do Desenvolvimento, Indústria, C",230166.71,0.0,0.0,0.0,457,457,0,0,100.0,0.0,0.0
+2024,44000,Ministério do Meio Ambiente e Mudança do Cl,2643178.65,738.05,0.0,0.0,2564,2564,0,0,100.0,0.0,0.0
+2024,47000,Ministério do Planejamento e Orçamento,5758896.54,955.91,0.0,0.0,15049,15049,0,0,100.0,0.0,0.0
+2024,38000,Ministério do Trabalho e Emprego,25331.22,0.0,0.0,0.0,72,72,0,0,100.0,0.0,0.0
+2024,40000,Ministério do Trabalho e Emprego,846517.41,0.0,0.0,0.0,2468,2468,0,0,100.0,0.0,0.0
+2024,54000,Ministério do Turismo,12205.47,0.0,0.0,0.0,12,12,0,0,100.0,0.0,0.0
+2024,81000,Ministério dos Direitos Humanos e Cidadania,35458.03,0.0,0.0,0.0,20,20,0,0,100.0,0.0,0.0
+2024,39000,Ministério dos Transportes,198410.67,0.0,0.0,0.0,714,714,0,0,100.0,0.0,0.0
+2024,20000,Presidência da República,171393.96,128182.55,26327467.49,0.0,12345,1184,11161,0,9.59,90.41,0.0
+2025,63000,Advocacia-Geral da União,184712.47,592.18,0.0,0.0,537,537,0,0,100.0,0.0,0.0
+2025,25201,Banco Central do Brasil - Orçamento Fiscal e,588652.16,30377.81,0.0,0.0,1139,1139,0,0,100.0,0.0,0.0
+2025,37000,Controladoria-Geral da União,57248.15,858.52,0.0,0.0,75,75,0,0,100.0,0.0,0.0
+2025,22000,Ministério da Agricultura e Pecuária,1877801.38,1169.42,0.0,0.0,3878,3878,0,0,100.0,0.0,0.0
+2025,24000,"Ministério da Ciência, Tecnologia e Inovaç",1184577.25,18706.93,0.0,0.0,2953,2953,0,0,100.0,0.0,0.0
+2025,42000,Ministério da Cultura,381620.44,0.0,0.0,0.0,719,719,0,0,100.0,0.0,0.0
+2025,52000,Ministério da Defesa,19039537.5,541417.89,15709.82,0.0,28707,28661,46,0,99.84,0.16,0.0
+2025,26000,Ministério da Educação,14970275.34,14645.96,0.0,0.0,28384,28384,0,0,100.0,0.0,0.0
+2025,25000,Ministério da Fazenda,1970535.83,24302.98,896150.0,0.0,4289,3470,819,0,80.9,19.1,0.0
+2025,46000,Ministério da Gestão e da Inovação em Ser,609275.58,1656.92,0.0,0.0,1432,1432,0,0,100.0,0.0,0.0
+2025,53000,Ministério da Integração e do Desenvolvime,488395.66,1378.56,0.0,0.0,1437,1437,0,0,100.0,0.0,0.0
+2025,30000,Ministério da Justiça e Segurança Pública,6581252.44,1584713.08,26957155.31,546.42,33941,7869,26066,6,23.18,76.8,0.02
+2025,58000,Ministério da Pesca e Aquicultura,5797.0,461.42,0.0,0.0,4,4,0,0,100.0,0.0,0.0
+2025,33000,Ministério da Previdência Social,67253.92,0.0,0.0,0.0,128,128,0,0,100.0,0.0,0.0
+2025,36000,Ministério da Saúde,2279855.65,294.81,0.0,0.0,4138,4138,0,0,100.0,0.0,0.0
+2025,56000,Ministério das Cidades,190726.13,0.0,0.0,0.0,302,302,0,0,100.0,0.0,0.0
+2025,41000,Ministério das Comunicações,65402.33,2448.58,0.0,0.0,115,115,0,0,100.0,0.0,0.0
+2025,35000,Ministério das Relações Exteriores,246586.07,0.0,0.0,0.0,428,428,0,0,100.0,0.0,0.0
+2025,32000,Ministério de Minas e Energia,1125857.43,2499.32,0.0,0.0,1765,1765,0,0,100.0,0.0,0.0
+2025,68000,Ministério de Portos e Aeroportos,73791.25,269.02,0.0,0.0,110,110,0,0,100.0,0.0,0.0
+2025,49000,Ministério do Desenvolvimento Agrário e Agr,2558039.25,565.65,0.0,0.0,5961,5961,0,0,100.0,0.0,0.0
+2025,28000,"Ministério do Desenvolvimento, Indústria, C",286819.48,0.0,0.0,0.0,566,566,0,0,100.0,0.0,0.0
+2025,44000,Ministério do Meio Ambiente e Mudança do Cl,3910685.97,865.88,0.0,0.0,3431,3431,0,0,100.0,0.0,0.0
+2025,47000,Ministério do Planejamento e Orçamento,8858581.17,1358.98,0.0,0.0,19451,19451,0,0,100.0,0.0,0.0
+2025,38000,Ministério do Trabalho e Emprego,40718.57,0.0,0.0,0.0,108,108,0,0,100.0,0.0,0.0
+2025,40000,Ministério do Trabalho e Emprego,1069893.67,0.0,0.0,0.0,2955,2955,0,0,100.0,0.0,0.0
+2025,54000,Ministério do Turismo,10687.49,0.0,0.0,0.0,29,29,0,0,100.0,0.0,0.0
+2025,81000,Ministério dos Direitos Humanos e Cidadania,57316.45,0.0,0.0,0.0,28,28,0,0,100.0,0.0,0.0
+2025,39000,Ministério dos Transportes,245131.77,0.0,0.0,0.0,656,656,0,0,100.0,0.0,0.0
+2025,20000,Presidência da República,224199.0,173349.89,22731981.87,0.0,13134,1402,11732,0,10.67,89.33,0.0

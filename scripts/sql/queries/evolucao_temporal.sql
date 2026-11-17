@@ -4,9 +4,6 @@
 -- Motivo: transações sem data informada continuam incluídas pelo mês do extrato.
 -- O período é fixado em 2023–2025; o script valida a presença dos 36 meses.
 -- Esta é uma comparação descritiva, sem teste estatístico de sazonalidade.
---
--- Cada consulta abaixo é marcada com "-- name: <identificador>" e é lida pelo
--- script scripts/analise_evolucao_temporal.py.
 
 -- name: mensal
 -- Valor, quantidade, ticket médio e parcela sigilosa por mês de extrato.

@@ -1,0 +1,25 @@
+grupo_operacao,posicao,codigo_orgao_superior,nome_orgao_superior,quantidade_transacoes,valor_total
+Exterior (INT$),1,30000,Ministério da Justiça e Segurança Pública,2828,4083277.86
+Exterior (INT$),2,52000,Ministério da Defesa,219,1022910.92
+Exterior (INT$),3,20000,Presidência da República,2207,407133.24
+Exterior (INT$),4,25201,Banco Central do Brasil - Orçamento Fiscal e,48,56716.42
+Exterior (INT$),5,25000,Ministério da Fazenda,44,41798.79
+Exterior (INT$),6,55000,Ministério do Desenvolvimento e Assistência,3,39916.3
+Exterior (INT$),7,26000,Ministério da Educação,43,28667.09
+Exterior (INT$),8,24000,"Ministério da Ciência, Tecnologia e Inovaç",4,22044.76
+Exterior (INT$),9,22000,Ministério da Agricultura e Pecuária,37,14728.59
+Exterior (INT$),10,32000,Ministério de Minas e Energia,11,9945.95
+Nao informada,1,30000,Ministério da Justiça e Segurança Pública,73248,75086229.69
+Nao informada,2,20000,Presidência da República,34373,73123923.59
+Nao informada,3,25000,Ministério da Fazenda,2383,2612630.0
+Nao informada,4,52000,Ministério da Defesa,168,44202.93
+R$/ATM,1,52000,Ministério da Defesa,66609,42189647.72
+R$/ATM,2,26000,Ministério da Educação,73960,34798438.91
+R$/ATM,3,47000,Ministério do Planejamento e Orçamento,55978,23468719.81
+R$/ATM,4,30000,Ministério da Justiça e Segurança Pública,18322,15116238.04
+R$/ATM,5,44000,Ministério do Meio Ambiente e Mudança do Cl,9694,9924915.52
+R$/ATM,6,25000,Ministério da Fazenda,11676,6421124.98
+R$/ATM,7,36000,Ministério da Saúde,11363,5808686.12
+R$/ATM,8,49000,Ministério do Desenvolvimento Agrário e Agr,14548,5442060.55
+R$/ATM,9,22000,Ministério da Agricultura e Pecuária,11970,5238953.44
+R$/ATM,10,32000,Ministério de Minas e Energia,5859,3117904.9
