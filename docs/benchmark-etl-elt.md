@@ -4,7 +4,7 @@
 
 O notebook [Benchmark_ETL_ELT.ipynb](../notebooks/Benchmark_ETL_ELT.ipynb), anteriormente chamado `Validacao_qualidade_comparativo.ipynb`, executa os pipelines [ETL](../notebooks/ETL.ipynb) e [ELT](../notebooks/ELT.ipynb), mede seus recursos e compara os bancos resultantes do CPGF de 2023, 2024 e 2025.
 
-A validação segue o [modelo dimensional](decisoes_modelagem.md): cinco dimensões, uma fato por transação e preservação das repetições da origem. O comparativo fornece evidências para o relatório do projeto; não substitui as três análises de negócio nem a discussão das vantagens e desvantagens das abordagens.
+A validação segue o [modelo dimensional](decisoes_modelagem.md): seis dimensões, uma fato por transação e preservação das repetições da origem. O comparativo fornece evidências para o relatório do projeto; não substitui as três análises de negócio nem a discussão das vantagens e desvantagens das abordagens.
 
 ## Entradas e configuração
 
@@ -69,14 +69,14 @@ O ELT preserva Raw e staging além do esquema estrela. Seu tamanho de arquivo, p
 
 ## Verificações de qualidade
 
-Na estrutura atual, uma execução completa sem divergências de esquema produz **46 verificações**:
+Na estrutura atual, uma execução completa sem divergências de esquema produz **49 verificações**:
 
 | Bloco | Quantidade | O que verifica |
 |---|---:|---|
-| Contagem | 9 | Fatos, Raw e staging contra o total dos CSVs; quantidade de membros das cinco dimensões. |
+| Contagem | 10 | Fatos, Raw e staging contra o total dos CSVs; quantidade de membros das seis dimensões. |
 | Soma financeira | 4 | Totais em centavos entre CSVs, ETL e ELT, incluindo comparação por ano do extrato. |
 | Integridade | 16 | Integridade SQLite, FKs declaradas e ausência de órfãos nas seis relações da fato, em cada banco. |
-| Equivalência | 11 | Colunas e conteúdo das dimensões, mais conteúdo e multiplicidade das transações. |
+| Equivalência | 13 | Colunas e conteúdo das dimensões, mais conteúdo e multiplicidade das transações. |
 | Sigilo | 6 | Contagens de datas/portadores especiais contra os CSVs e aplicação das chaves especiais aos marcadores de sigilo identificados no banco. |
 
 ### Equivalência sem depender das SKs
@@ -109,10 +109,16 @@ O JSON contém modo, repetições, commit, hashes SHA-256 dos CSVs, versões do 
 O resultado esperado, com a estrutura atual e dados consistentes, é:
 
 ```text
-Resumo: 46 OK | 0 FALHA
+Resumo: 49 OK | 0 FALHA
 ```
 
 Uma `FALHA` aparece no relatório com seu bloco, descrição e detalhe. O notebook não lança uma exceção apenas por existir esse status: é necessário conferir o resumo. Erros de execução dos pipelines, arquivos ausentes ou consultas inválidas podem interromper o notebook antes da geração do JSON.
+
+### Medições históricas
+
+Os resultados de desempenho anteriores à inclusão de `DIM_MES_EXTRATO` são registros históricos do modelo com cinco dimensões e 46 verificações. Seus valores de tempo, memória e tamanho do banco devem ser preservados, inclusive no arquivo `data/processed/benchmark_etl_elt_completo.json` e nos relatórios que citam essa execução.
+
+Esses resultados não representam uma medição do modelo atual. A atualização para seis dimensões e 49 verificações exige uma nova execução do benchmark para obter novas medições de desempenho. Até lá, os números anteriores devem ser identificados como históricos, sem substituí-los por estimativas ou resultados das amostras.
 
 ## Diagnóstico e limites
 
