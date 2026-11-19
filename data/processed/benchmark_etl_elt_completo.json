@@ -1,12 +1,12 @@
 {
-  "gerado_em": "2026-11-17T19:37:36",
+  "gerado_em": "2026-11-18T23:48:52",
   "modo": "completo",
   "repeticoes": 3,
-  "commit": "845707b26a57d74ecdd80d4fa6fed6293771ce75",
+  "commit": "bca3b0385260212f7a8da2ddbe29f87dcc2c0dc3",
   "sha256_entradas": {
-    "2023_CPGF.csv": "b27b543e0f6c59d796bffc930e6f3d2426635bb486d840b1b6340d0f6330a36a",
-    "2024_CPGF.csv": "bd3fb71c14649923a3f161c4eb0a857aa155102f0288b99461d04a1fdbf41318",
-    "2025_CPGF.csv": "b689ba7d7135d28098811dbd7f8c0ee7c25429309f2ca74056ca773b0acf70b0"
+    "2023_CPGF.csv": "64c0cb58763f844f39113a63de02664135a845ad4b5804cae617db2ed0afc7ac",
+    "2024_CPGF.csv": "ae3c84f8744b897302b73af9106af7cc603c1751a190f7ef8af25ff1e35613e0",
+    "2025_CPGF.csv": "e20d476e4a67e4e75cccf820b13b47616393f01a5bb79f87d3462f3e1340e911"
   },
   "ambiente": {
     "python": "3.12.3 (main, Aug 31 2026, 10:18:26) [GCC 13.3.0]",
@@ -14,60 +14,60 @@
     "sqlite": "3.45.1",
     "pandas": "3.1.1"
   },
-  "linhas_csv": 438771,
-  "centavos_csv": 32477451409,
+  "linhas_csv": 438770,
+  "centavos_csv": 32477231237,
   "tempos": [
     {
       "pipeline": "ETL",
-      "tempo_total_s": 13.662,
-      "pico_memoria_mb": 677.175,
+      "tempo_total_s": 14.12,
+      "pico_memoria_mb": 655.966,
       "repeticao": 1
     },
     {
       "pipeline": "ELT",
-      "tempo_total_s": 15.734,
-      "pico_memoria_mb": 80.466,
+      "tempo_total_s": 17.234,
+      "pico_memoria_mb": 80.544,
       "repeticao": 1
     },
     {
       "pipeline": "ELT",
-      "tempo_total_s": 16.372,
-      "pico_memoria_mb": 80.388,
+      "tempo_total_s": 16.93,
+      "pico_memoria_mb": 79.852,
       "repeticao": 2
     },
     {
       "pipeline": "ETL",
-      "tempo_total_s": 14.232,
-      "pico_memoria_mb": 678.474,
+      "tempo_total_s": 13.733,
+      "pico_memoria_mb": 659.075,
       "repeticao": 2
     },
     {
       "pipeline": "ETL",
-      "tempo_total_s": 14.759,
-      "pico_memoria_mb": 677.179,
+      "tempo_total_s": 13.813,
+      "pico_memoria_mb": 657.998,
       "repeticao": 3
     },
     {
       "pipeline": "ELT",
-      "tempo_total_s": 18.042,
-      "pico_memoria_mb": 80.343,
+      "tempo_total_s": 18.621,
+      "pico_memoria_mb": 80.544,
       "repeticao": 3
     }
   ],
   "resumo_tempo": [
     {
       "pipeline": "ELT",
-      "minimo_s": 15.73,
-      "mediana_s": 16.37,
-      "maximo_s": 18.04,
-      "pico_memoria_mb": 80.47
+      "minimo_s": 16.93,
+      "mediana_s": 17.23,
+      "maximo_s": 18.62,
+      "pico_memoria_mb": 80.54
     },
     {
       "pipeline": "ETL",
-      "minimo_s": 13.66,
-      "mediana_s": 14.23,
-      "maximo_s": 14.76,
-      "pico_memoria_mb": 678.47
+      "minimo_s": 13.73,
+      "mediana_s": 13.81,
+      "maximo_s": 14.12,
+      "pico_memoria_mb": 659.08
     }
   ],
   "caracteristicas": [
@@ -78,28 +78,28 @@
     },
     {
       "característica": "Tempo total, mediana (s)",
-      "ETL": "14.23",
-      "ELT": "16.37"
+      "ETL": "13.81",
+      "ELT": "17.23"
     },
     {
       "característica": "Tempo total, mínimo (s)",
-      "ETL": "13.66",
-      "ELT": "15.73"
+      "ETL": "13.73",
+      "ELT": "16.93"
     },
     {
       "característica": "Pico de memória do kernel (MB)",
-      "ETL": "678",
-      "ELT": "80"
+      "ETL": "659",
+      "ELT": "81"
     },
     {
       "característica": "Tamanho do banco (MB)",
-      "ETL": "54.91",
-      "ELT": "302.96"
+      "ETL": "54.02",
+      "ELT": "301.66"
     },
     {
       "característica": "Tabelas no banco",
-      "ETL": "6",
-      "ELT": "10"
+      "ETL": "7",
+      "ELT": "11"
     },
     {
       "característica": "Guarda o dado bruto no banco",
@@ -108,18 +108,18 @@
     },
     {
       "característica": "Linhas de código Python no notebook",
-      "ETL": "350",
+      "ETL": "419",
       "ELT": "263"
     },
     {
       "característica": "Linhas de SQL de transformação",
       "ETL": "0",
-      "ELT": "235"
+      "ELT": "271"
     },
     {
       "característica": "Scripts SQL de transformação",
       "ETL": "0",
-      "ELT": "7"
+      "ELT": "8"
     },
     {
       "característica": "Usa pandas",
@@ -132,25 +132,25 @@
       "bloco": "4 contagem",
       "verificacao": "fato do ETL = linhas dos CSVs",
       "status": "OK",
-      "detalhe": "438,771 vs 438,771"
+      "detalhe": "438,770 vs 438,770"
     },
     {
       "bloco": "4 contagem",
       "verificacao": "fato do ELT = linhas dos CSVs",
       "status": "OK",
-      "detalhe": "438,771 vs 438,771"
+      "detalhe": "438,770 vs 438,770"
     },
     {
       "bloco": "4 contagem",
       "verificacao": "ELT: camada raw (3 tabelas) = linhas dos CSVs",
       "status": "OK",
-      "detalhe": "438,771 vs 438,771"
+      "detalhe": "438,770 vs 438,770"
     },
     {
       "bloco": "4 contagem",
       "verificacao": "ELT: staging = linhas dos CSVs",
       "status": "OK",
-      "detalhe": "438,771 vs 438,771"
+      "detalhe": "438,770 vs 438,770"
     },
     {
       "bloco": "4 contagem",
@@ -160,15 +160,21 @@
     },
     {
       "bloco": "4 contagem",
+      "verificacao": "DIM_MES_EXTRATO: mesma quantidade nos dois bancos",
+      "status": "OK",
+      "detalhe": "ETL=36 | ELT=36"
+    },
+    {
+      "bloco": "4 contagem",
       "verificacao": "DIM_ORGAO: mesma quantidade nos dois bancos",
       "status": "OK",
-      "detalhe": "ETL=1,374 | ELT=1,374"
+      "detalhe": "ETL=1,373 | ELT=1,373"
     },
     {
       "bloco": "4 contagem",
       "verificacao": "DIM_PORTADOR: mesma quantidade nos dois bancos",
       "status": "OK",
-      "detalhe": "ETL=9,955 | ELT=9,955"
+      "detalhe": "ETL=9,954 | ELT=9,954"
     },
     {
       "bloco": "4 contagem",
@@ -186,13 +192,13 @@
       "bloco": "5 soma",
       "verificacao": "soma em centavos: ETL = CSVs",
       "status": "OK",
-      "detalhe": "32,477,451,409 vs 32,477,451,409"
+      "detalhe": "32,477,231,237 vs 32,477,231,237"
     },
     {
       "bloco": "5 soma",
       "verificacao": "soma em centavos: ELT = CSVs",
       "status": "OK",
-      "detalhe": "32,477,451,409 vs 32,477,451,409"
+      "detalhe": "32,477,231,237 vs 32,477,231,237"
     },
     {
       "bloco": "5 soma",
@@ -226,7 +232,7 @@
     },
     {
       "bloco": "6 integridade",
-      "verificacao": "ETL: id_mes_extrato → DIM_TEMPO sem órfãos",
+      "verificacao": "ETL: id_mes_extrato → DIM_MES_EXTRATO sem órfãos",
       "status": "OK",
       "detalhe": "0 órfãos"
     },
@@ -274,7 +280,7 @@
     },
     {
       "bloco": "6 integridade",
-      "verificacao": "ELT: id_mes_extrato → DIM_TEMPO sem órfãos",
+      "verificacao": "ELT: id_mes_extrato → DIM_MES_EXTRATO sem órfãos",
       "status": "OK",
       "detalhe": "0 órfãos"
     },
@@ -311,6 +317,18 @@
     {
       "bloco": "6b equivalência",
       "verificacao": "DIM_TEMPO: conteúdo sem depender das SKs",
+      "status": "OK",
+      "detalhe": "0 grupos divergentes"
+    },
+    {
+      "bloco": "6b equivalência",
+      "verificacao": "DIM_MES_EXTRATO: mesmos atributos",
+      "status": "OK",
+      "detalhe": ""
+    },
+    {
+      "bloco": "6b equivalência",
+      "verificacao": "DIM_MES_EXTRATO: conteúdo sem depender das SKs",
       "status": "OK",
       "detalhe": "0 grupos divergentes"
     },
