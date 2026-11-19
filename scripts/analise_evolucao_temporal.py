@@ -82,9 +82,15 @@ def main():
     if set(consultas) != {"mensal", "sazonalidade", "anual"}:
         raise ValueError("O SQL deve conter as consultas mensal, sazonalidade e anual.")
     with sqlite3.connect(banco.as_uri() + "?mode=ro", uri=True) as con:
-        orfas = con.execute("""SELECT COUNT(*) FROM FATO_TRANSACAO_CPGF f
-            LEFT JOIN DIM_TEMPO t ON t.id_tempo = f.id_mes_extrato
-            WHERE t.id_tempo IS NULL OR t.ano IS NULL OR t.mes IS NULL""").fetchone()[0]
+        orfas = con.execute("""
+            SELECT COUNT(*)
+            FROM FATO_TRANSACAO_CPGF f
+            LEFT JOIN DIM_MES_EXTRATO t
+                ON t.id_mes_extrato = f.id_mes_extrato
+            WHERE t.id_mes_extrato IS NULL
+               OR t.ano IS NULL
+               OR t.mes IS NULL
+        """).fetchone()[0]
         if orfas:
             raise ValueError(f"Há {orfas} transações sem mês de extrato válido.")
         res = {nome: pd.read_sql(sql, con) for nome, sql in consultas.items()}
@@ -129,7 +135,7 @@ def main():
         ax.legend(frameon=False, loc="upper left", fontsize=9, labelcolor=TEXTO_2, ncols=3)
     fig.suptitle("CPGF 2023–2025: gastos por mês de extrato", x=0.01, ha="left",
                  fontsize=13, color=TEXTO, fontweight="bold")
-    fig.text(0.01, 0.01, "Fonte: DW CPGF (FATO_TRANSACAO_CPGF × DIM_TEMPO). Valores nominais; inclui transações sigilosas.",
+    fig.text(0.01, 0.01, "Fonte: DW CPGF (FATO_TRANSACAO_CPGF x DIM_MES_EXTRATO). Valores nominais; inclui transações sigilosas.",
              fontsize=8, color=MUDO)
     fig.tight_layout(rect=(0, 0.03, 1, 0.95))
     fig.savefig(saida, dpi=150, facecolor=SUPERFICIE)
