@@ -124,6 +124,6 @@ As três análises, detalhadas em [docs/report/relatorio.tex](docs/report/relato
 
 | Nome | Login | Principais contribuições |
 | :--- | :--- | :--- |
-| Flávio Araújo Filho | fagpaf | Estrutura inicial do projeto, perfilamento dos dados, dicionário de dados e DDL, pipelines ETL e ELT, reorganização final de pastas e documentação do benchmark. |
-| João Pedro A. de Moraes | jpam | Script de coleta dos dados, DDL do esquema estrela, transformação SQL do ELT, documentação da coleta e redação do relatório técnico final. |
-| Maria Cláudia Rocha | mcsr | Diagramas e documentação da modelagem, notebook de benchmark e validação ETL × ELT, as três análises (consultas SQL, scripts de visualização e documentação). |
+| Flávio Araújo Filho | fagpaf | Data profiling e auditoria temporal, notebooks ETL e ELT (Extract & Load), análise 1 (evolução temporal e sazonalidade), auditoria final e simulação de defesa. |
+| João Pedro A. de Moraes | jpam | Coleta e ingestão dos dados do CPGF, scripts DDL e dicionário de dados, scripts SQL de transformação do ELT, redação do relatório técnico e documentação do README. |
+| Maria Cláudia Rocha | mcsr | Modelagem dimensional (Star Schema), validação cruzada e comparativo ETL x ELT, análises 2 e 3 (órgãos/sigilo e favorecidos/transações), slides da apresentação. |
