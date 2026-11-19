@@ -5,14 +5,34 @@ Decisões arquiteturais aplicadas ao modelo dimensional em Esquema Estrela (*Sta
 ## 1. Grão da Tabela Fato
 Cada linha da `FATO_TRANSACAO_CPGF` representa **uma transação individual (compra ou saque)**.
 - **Chave primária:** `id_transacao` (chave substituta sequencial).
-- **Medidas:** `valor_transacao` (valor financeiro da operação) e `quantidade_transacoes` (constante `1` por registro para agregações).
+- **Medida armazenada:** `valor_transacao` (valor financeiro da operação).
+- **Quantidade de transações:** calculada nas consultas com `COUNT(*)`.
+  A coluna constante `quantidade_transacoes` foi removida por ser redundante.
+  O `CHECK (= 1)` apenas restringia seu valor; não garantia a granularidade
+  da fato, que depende da carga e de suas validações.
 
-## 2. Dimensão Temporal (*Role-Playing Dimension*)
-Uma única tabela `DIM_TEMPO` cumpre dois papéis distintos na tabela fato:
-- `id_data_transacao`: data em que a compra ou saque ocorreu.
-- `id_mes_extrato`: mês e ano da prestação de contas, ancorado no dia `01` do respectivo mês (ex: `2023-01-01`).
+## 2. Dimensões Temporais
 
-Isso evita duplicar tabelas de calendário e permite analisar transações sigilosas (que omitem a data da compra, mas informam o mês do extrato).
+O modelo separa a data da transação do período mensal do extrato:
+
+- `id_data_transacao` referencia `DIM_TEMPO(id_tempo)`, com chave
+  `YYYYMMDD`. Essa dimensão contém os atributos diários, como dia,
+  dia da semana e indicação de fim de semana.
+- `id_mes_extrato` referencia `DIM_MES_EXTRATO(id_mes_extrato)`, com
+  chave `YYYYMM`. Essa dimensão contém ano, mês, nome do mês,
+  trimestre e semestre.
+
+A dimensão mensal possui os doze meses de cada ano de extrato presente
+na origem. Ano e mês são preservados juntos para distinguir períodos
+de anos diferentes.
+
+Essa separação evita atribuir ao extrato os atributos diários de uma
+data artificial. Por exemplo, uma compra em 31/12/2022 com extrato de
+janeiro de 2023 terá `id_data_transacao = 20221231` e
+`id_mes_extrato = 202301`.
+
+Transações sigilosas continuam incluídas nas análises pelo mês do
+extrato, mesmo quando a data da compra não está disponível.
 
 ## 3. Dimensão de Favorecido (`DIM_FAVORECIDO`)
 Identificada pelo par `(documento, nome_favorecido)`. O campo `documento` é mantido como texto para preservar zeros à esquerda e máscaras.
