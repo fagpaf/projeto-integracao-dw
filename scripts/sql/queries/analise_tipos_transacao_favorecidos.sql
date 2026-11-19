@@ -14,7 +14,11 @@ JOIN DIM_TIPO_TRANSACAO tt
     ON f.id_tipo_transacao = tt.id_tipo_transacao
 
 WHERE tt.categoria IN ('Compra', 'Saque')
-  AND f.id_mes_extrato IN (SELECT id_tempo FROM DIM_TEMPO WHERE ano BETWEEN 2023 AND 2025)
+  AND f.id_mes_extrato IN (
+    SELECT id_mes_extrato
+    FROM DIM_MES_EXTRATO
+    WHERE ano BETWEEN 2023 AND 2025
+)
 
 GROUP BY
     tt.categoria,
@@ -46,7 +50,11 @@ WITH gastos_por_favorecido AS (
         ON f.id_tipo_transacao = tt.id_tipo_transacao
 
     WHERE tt.categoria IN ('Compra', 'Saque')
-  AND f.id_mes_extrato IN (SELECT id_tempo FROM DIM_TEMPO WHERE ano BETWEEN 2023 AND 2025)
+    AND f.id_mes_extrato IN (
+        SELECT id_mes_extrato
+        FROM DIM_MES_EXTRATO
+        WHERE ano BETWEEN 2023 AND 2025
+    )
       AND fav.tipo_pessoa IN ('PJ', 'PF')
       AND (CASE WHEN tt.descricao_original LIKE '%INT$%' THEN 'Exterior (INT$)' WHEN tt.descricao_original LIKE '%R$%' OR tt.descricao_original = 'SAQUE CASH/ATM BB' THEN 'R$/ATM' ELSE 'Sem identificação' END) = 'R$/ATM'
 
@@ -108,7 +116,11 @@ JOIN DIM_TIPO_TRANSACAO tt
     ON f.id_tipo_transacao = tt.id_tipo_transacao
 
 WHERE tt.categoria IN ('Compra', 'Saque')
-  AND f.id_mes_extrato IN (SELECT id_tempo FROM DIM_TEMPO WHERE ano BETWEEN 2023 AND 2025)
+  AND f.id_mes_extrato IN (
+    SELECT id_mes_extrato
+    FROM DIM_MES_EXTRATO
+    WHERE ano BETWEEN 2023 AND 2025
+  )
 
 GROUP BY
     (CASE WHEN tt.descricao_original LIKE '%INT$%' THEN 'Exterior (INT$)' WHEN tt.descricao_original LIKE '%R$%' OR tt.descricao_original = 'SAQUE CASH/ATM BB' THEN 'R$/ATM' ELSE 'Sem identificação' END),

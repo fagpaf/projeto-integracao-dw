@@ -49,8 +49,8 @@ WITH gastos_por_orgao AS (
     FROM FATO_TRANSACAO_CPGF f
     JOIN DIM_ORGAO o
         ON f.id_orgao = o.id_orgao
-    JOIN DIM_TEMPO t
-        ON f.id_mes_extrato = t.id_tempo
+    JOIN DIM_MES_EXTRATO t
+        ON f.id_mes_extrato = t.id_mes_extrato
     JOIN DIM_TIPO_TRANSACAO tt
         ON f.id_tipo_transacao = tt.id_tipo_transacao
 
@@ -115,8 +115,8 @@ WITH gastos_por_orgao_moeda AS (
     FROM FATO_TRANSACAO_CPGF f
     JOIN DIM_ORGAO o
         ON f.id_orgao = o.id_orgao
-    JOIN DIM_TEMPO t
-        ON f.id_mes_extrato = t.id_tempo
+    JOIN DIM_MES_EXTRATO t
+        ON f.id_mes_extrato = t.id_mes_extrato
     JOIN DIM_TIPO_TRANSACAO tt
         ON f.id_tipo_transacao = tt.id_tipo_transacao
 

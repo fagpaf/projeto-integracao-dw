@@ -17,7 +17,8 @@ SELECT
     ROUND(100.0 * SUM(CASE WHEN f.id_data_transacao = -1 THEN f.valor_transacao ELSE 0 END)
           / NULLIF(SUM(f.valor_transacao), 0), 1)                    AS pct_valor_sigiloso
 FROM FATO_TRANSACAO_CPGF AS f
-JOIN DIM_TEMPO AS t ON t.id_tempo = f.id_mes_extrato
+JOIN DIM_MES_EXTRATO AS t
+    ON t.id_mes_extrato = f.id_mes_extrato
 WHERE t.ano BETWEEN 2023 AND 2025
 GROUP BY t.ano, t.mes, t.nome_mes
 ORDER BY t.ano, t.mes;
@@ -28,7 +29,8 @@ ORDER BY t.ano, t.mes;
 WITH mensal AS (
     SELECT t.ano, t.mes, SUM(f.valor_transacao) AS valor_total
     FROM FATO_TRANSACAO_CPGF AS f
-    JOIN DIM_TEMPO AS t ON t.id_tempo = f.id_mes_extrato
+    JOIN DIM_MES_EXTRATO AS t
+        ON t.id_mes_extrato = f.id_mes_extrato
     WHERE t.ano BETWEEN 2023 AND 2025
 GROUP BY t.ano, t.mes
 )
@@ -46,7 +48,8 @@ WITH anual AS (
            COUNT(*)                         AS qtd_transacoes,
            SUM(f.valor_transacao)           AS valor_total
     FROM FATO_TRANSACAO_CPGF AS f
-    JOIN DIM_TEMPO AS t ON t.id_tempo = f.id_mes_extrato
+    JOIN DIM_MES_EXTRATO AS t 
+        ON t.id_mes_extrato = f.id_mes_extrato
     WHERE t.ano BETWEEN 2023 AND 2025
 GROUP BY t.ano
 )
