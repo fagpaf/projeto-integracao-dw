@@ -5,7 +5,7 @@
 
 INSERT INTO FATO_TRANSACAO_CPGF (
     id_data_transacao, id_mes_extrato, id_orgao, id_portador,
-    id_favorecido, id_tipo_transacao, valor_transacao, quantidade_transacoes
+    id_favorecido, id_tipo_transacao, valor_transacao
 )
 SELECT
     s.id_data_transacao,
@@ -14,8 +14,7 @@ SELECT
     CASE WHEN s.portador_especial THEN -1 ELSE p.id_portador END AS id_portador,
     f.id_favorecido,
     t.id_tipo_transacao,
-    s.valor_centavos / 100.0 AS valor_transacao,
-    1 AS quantidade_transacoes
+    s.valor_centavos / 100.0 AS valor_transacao
 FROM stg_cpgf_transacoes AS s
 JOIN DIM_ORGAO AS o
     ON o.codigo_unidade_gestora = s.codigo_unidade_gestora
