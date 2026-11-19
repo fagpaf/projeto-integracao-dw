@@ -104,6 +104,6 @@ SELECT
              SUBSTR(data_original, 7, 4) || SUBSTR(data_original, 4, 2) || SUBSTR(data_original, 1, 2)
          AS INTEGER)
     END AS id_data_transacao,
-    -- id_mes_extrato: ancorado no dia 01 do mês do extrato (YYYYMM01).
-    CAST(ano_extrato || mes_extrato || '01' AS INTEGER) AS id_mes_extrato
+    -- id_mes_extrato: ano e mês do extrato (YYYYMM).
+    CAST(ano_extrato AS INTEGER) * 100 + CAST(mes_extrato AS INTEGER) AS id_mes_extrato
 FROM marcados;

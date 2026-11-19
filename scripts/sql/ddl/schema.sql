@@ -1,7 +1,7 @@
 PRAGMA foreign_keys = ON;
 
--- DIM_TEMPO (role-playing: data da transação e mês do extrato)
--- id_tempo = YYYYMMDD. O mês do extrato é ancorado no dia 01 (ex.: 20230101).
+-- DIM_TEMPO: calendário diário da data da transação.
+-- id_tempo = YYYYMMDD; o mês do extrato usa DIM_MES_EXTRATO.
 CREATE TABLE DIM_TEMPO (
     id_tempo       INTEGER PRIMARY KEY,   -- YYYYMMDD ou -1 (Não Informado / Sigiloso)
     data           DATE,                  -- NULL apenas para id_tempo = -1
@@ -17,6 +17,19 @@ CREATE TABLE DIM_TEMPO (
     CONSTRAINT ck_dim_tempo_mes CHECK (mes BETWEEN 1 AND 12),
     CONSTRAINT ck_dim_tempo_trimestre CHECK (trimestre BETWEEN 1 AND 4),
     CONSTRAINT ck_dim_tempo_semestre CHECK (semestre BETWEEN 1 AND 2)
+);
+
+-- Período mensal do extrato, sem atributos de dia.
+CREATE TABLE DIM_MES_EXTRATO (
+    id_mes_extrato INTEGER PRIMARY KEY, -- AAAAMM, exemplo: 202301
+    ano           INTEGER NOT NULL,
+    mes           INTEGER NOT NULL CHECK (mes BETWEEN 1 AND 12),
+    nome_mes      VARCHAR(30) NOT NULL,
+    trimestre     INTEGER NOT NULL CHECK (trimestre BETWEEN 1 AND 4),
+    semestre      INTEGER NOT NULL CHECK (semestre BETWEEN 1 AND 2),
+    CONSTRAINT uq_dim_mes_extrato UNIQUE (ano, mes),
+    CONSTRAINT ck_dim_mes_extrato_id
+        CHECK (id_mes_extrato = ano * 100 + mes)
 );
 
 -- DIM_ORGAO (hierarquia administrativa desnormalizada)
@@ -76,10 +89,8 @@ CREATE TABLE FATO_TRANSACAO_CPGF (
     id_favorecido          INTEGER        NOT NULL,
     id_tipo_transacao      INTEGER        NOT NULL,
     valor_transacao        DECIMAL(15, 2) NOT NULL,   -- sem CHECK de sinal: estornos não verificados
-    quantidade_transacoes  INTEGER        NOT NULL DEFAULT 1,
-    CONSTRAINT ck_fato_quantidade CHECK (quantidade_transacoes = 1),
     CONSTRAINT fk_fato_data_transacao FOREIGN KEY (id_data_transacao) REFERENCES DIM_TEMPO (id_tempo),
-    CONSTRAINT fk_fato_mes_extrato    FOREIGN KEY (id_mes_extrato)    REFERENCES DIM_TEMPO (id_tempo),
+    CONSTRAINT fk_fato_mes_extrato    FOREIGN KEY (id_mes_extrato)    REFERENCES DIM_MES_EXTRATO (id_mes_extrato),
     CONSTRAINT fk_fato_orgao          FOREIGN KEY (id_orgao)          REFERENCES DIM_ORGAO (id_orgao),
     CONSTRAINT fk_fato_portador       FOREIGN KEY (id_portador)       REFERENCES DIM_PORTADOR (id_portador),
     CONSTRAINT fk_fato_favorecido     FOREIGN KEY (id_favorecido)     REFERENCES DIM_FAVORECIDO (id_favorecido),

@@ -11,18 +11,19 @@ Mapeamento estrutural, restrições de integridade e regras de negócio do Esque
 | :--- | :--- | :--- | :--- | :--- |
 | `id_transacao` | `INTEGER` | `PK` | *Gerado no DW* | Chave substituta sequencial automática do SQLite (`ROWID`). |
 | `id_data_transacao` | `INTEGER` | `FK`, `NOT NULL` | `DATA TRANSAÇÃO` | Ref. `DIM_TEMPO(id_tempo)` no formato `YYYYMMDD`. Recebe `-1` se sigilosa/ausente. |
-| `id_mes_extrato` | `INTEGER` | `FK`, `NOT NULL` | `ANO/MÊS EXTRATO` | Ref. `DIM_TEMPO(id_tempo)` ancorada no dia `01` do mês (`YYYYMM01`). |
+| `id_mes_extrato` | `INTEGER` | `FK`, `NOT NULL` | `ANO/MÊS EXTRATO` | Ref. `DIM_MES_EXTRATO(id_mes_extrato)`, com chave `YYYYMM` (ex.: `202301`). |
 | `id_orgao` | `INTEGER` | `FK`, `NOT NULL` | `CÓD. UG / ÓRGÃO` | Ref. `DIM_ORGAO(id_orgao)`. |
 | `id_portador` | `INTEGER` | `FK`, `NOT NULL` | `CPF / NOME PORTADOR` | Ref. `DIM_PORTADOR(id_portador)`. Recebe `-1` se sigilosa/ausente. |
 | `id_favorecido` | `INTEGER` | `FK`, `NOT NULL` | `CNPJ-CPF / NOME FAV.` | Ref. `DIM_FAVORECIDO(id_favorecido)`. |
 | `id_tipo_transacao` | `INTEGER` | `FK`, `NOT NULL` | `TRANSAÇÃO` | Ref. `DIM_TIPO_TRANSACAO(id_tipo_transacao)`. |
 | `valor_transacao` | `DECIMAL(15,2)` | `NOT NULL` | `VALOR TRANSAÇÃO` | Convertido de `1.234,56` para ponto decimal. Em agregações no SQLite, utilizar `ROUND(SUM(valor_transacao), 2)`. |
-| `quantidade_transacoes`| `INTEGER` | `NOT NULL`, `DEFAULT 1`, `CHECK (= 1)` | *Derivado* | Métrica constante igual a `1` para contagem aditiva de transações. |
+
+A quantidade de transações é calculada com `COUNT(*)`, sem coluna constante na fato.
 
 ---
 
 ### 2. `DIM_TEMPO`
-**Descrição:** Dimensão calendário (*Role-Playing Dimension*) utilizada para a data da transação e para o mês do extrato.
+**Descrição:** Calendário diário utilizado exclusivamente para a data da transação. O período do extrato é representado por `DIM_MES_EXTRATO`.
 
 | Coluna | Tipo | Restrições | Descrição / Regra |
 | :--- | :--- | :--- | :--- |
@@ -36,6 +37,23 @@ Mapeamento estrutural, restrições de integridade e regras de negócio do Esque
 | `ano` | `INTEGER` | — | Ano com 4 dígitos (`2023` a `2025`). `NULL` para `-1`. |
 | `dia_semana` | `VARCHAR(20)` | `NOT NULL` | Dia da semana em português ou `'Não Informado'`. |
 | `fim_de_semana` | `BOOLEAN` | — | `1` para sábado/domingo, `0` para dia útil (`NULL` para `-1`). |
+
+---
+
+### 2.1. `DIM_MES_EXTRATO`
+
+**Descrição:** Período mensal de prestação de contas. Contém os doze meses de cada ano de extrato presente na origem, sem atributos diários.
+
+| Coluna | Tipo | Restrições | Descrição / Regra |
+| :--- | :--- | :--- | :--- |
+| `id_mes_extrato` | `INTEGER` | `PK`, `CHECK (= ano * 100 + mes)` | Chave `YYYYMM`, como `202301`. |
+| `ano` | `INTEGER` | `NOT NULL` | Ano do extrato. |
+| `mes` | `INTEGER` | `NOT NULL`, `CHECK (1..12)` | Número do mês. |
+| `nome_mes` | `VARCHAR(30)` | `NOT NULL` | Nome do mês em português. |
+| `trimestre` | `INTEGER` | `NOT NULL`, `CHECK (1..4)` | Calculado na carga como `(mes - 1) / 3 + 1`, com divisão inteira. |
+| `semestre` | `INTEGER` | `NOT NULL`, `CHECK (1..2)` | Calculado na carga como `(mes - 1) / 6 + 1`, com divisão inteira. |
+
+O par `(ano, mes)` possui restrição `UNIQUE`.
 
 ---
 

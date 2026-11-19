@@ -36,17 +36,18 @@ Grão: 1 linha = 1 transação individual (compra ou saque).
 |---|---|---|---|
 | `id_transacao` | INTEGER | PK | Sequencial automático |
 | `id_data_transacao` | INTEGER | FK → `DIM_TEMPO` | DATA TRANSAÇÃO (`dd/mm/aaaa` → `aaaammdd`); vazia (sigilo) → `-1` |
-| `id_mes_extrato` | INTEGER | FK → `DIM_TEMPO` | ANO EXTRATO + MÊS EXTRATO → `aaaamm01` |
+| `id_mes_extrato` | INTEGER | FK → `DIM_MES_EXTRATO` | ANO EXTRATO + MÊS EXTRATO → `aaaamm` (ex.: `202301`) |
 | `id_orgao` | INTEGER | FK → `DIM_ORGAO` | Unidade gestora da transação |
 | `id_portador` | INTEGER | FK → `DIM_PORTADOR` | CPF PORTADOR vazio (sigilo) → `-1` |
 | `id_favorecido` | INTEGER | FK → `DIM_FAVORECIDO` | Favorecido da transação |
 | `id_tipo_transacao` | INTEGER | FK → `DIM_TIPO_TRANSACAO` | TRANSAÇÃO |
 | `valor_transacao` | DECIMAL(15,2) | | VALOR TRANSAÇÃO (vírgula decimal → ponto) |
-| `quantidade_transacoes` | INTEGER | | Sempre `1` (`CHECK`) |
+
+A quantidade de transações é calculada com `COUNT(*)`, sem coluna constante na fato.
 
 ## DIM_TEMPO
 
-Dimensão role-playing: serve à data da transação e ao mês do extrato (dia `01`).
+Calendário diário utilizado exclusivamente para a data da transação. O período do extrato é representado por `DIM_MES_EXTRATO`.
 
 | Coluna | Tipo | Chave | Descrição |
 |---|---|---|---|
@@ -57,6 +58,21 @@ Dimensão role-playing: serve à data da transação e ao mês do extrato (dia `
 | `trimestre`, `semestre` | INTEGER | | 1–4 e 1–2 |
 | `dia_semana` | VARCHAR | | Em português; `Não Informado` em `-1` |
 | `fim_de_semana` | BOOLEAN | | `1` sábado/domingo, `0` dia útil |
+
+## DIM_MES_EXTRATO
+
+**Descrição:** Período mensal de prestação de contas. Contém os doze meses de cada ano de extrato presente na origem, sem atributos diários.
+
+| Coluna | Tipo | Restrições | Descrição / Regra |
+| :--- | :--- | :--- | :--- |
+| `id_mes_extrato` | `INTEGER` | `PK`, `CHECK (= ano * 100 + mes)` | Chave `YYYYMM`, como `202301`. |
+| `ano` | `INTEGER` | `NOT NULL` | Ano do extrato. |
+| `mes` | `INTEGER` | `NOT NULL`, `CHECK (1..12)` | Número do mês. |
+| `nome_mes` | `VARCHAR(30)` | `NOT NULL` | Nome do mês em português. |
+| `trimestre` | `INTEGER` | `NOT NULL`, `CHECK (1..4)` | Calculado na carga como `(mes - 1) / 3 + 1`, com divisão inteira. |
+| `semestre` | `INTEGER` | `NOT NULL`, `CHECK (1..2)` | Calculado na carga como `(mes - 1) / 6 + 1`, com divisão inteira. |
+
+O par `(ano, mes)` possui restrição `UNIQUE`.
 
 ## DIM_ORGAO
 
