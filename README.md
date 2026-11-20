@@ -103,7 +103,7 @@ python -m pip install -r requirements.txt
 
 ## Resultados e Insights
 
-As três análises, detalhadas em [docs/report/relatorio.tex](docs/report/relatorio.tex), usam o data warehouse já carregado:
+As três análises, detalhadas em [docs/report/relatorio.pdf](docs/report/relatorio.pdf), usam o data warehouse já carregado:
 
 1. **Evolução temporal:** o valor gasto cresce todo ano (+23,2% em 2024, +9,3% em 2025), mas o crescimento desacelera; novembro e dezembro concentram entre 23% e 26% do valor anual, e fevereiro é sistematicamente o mês mais fraco.
 2. **Gastos por órgão:** no recorte de compras e saques em reais, Defesa, Educação e Planejamento concentram os maiores valores com sigilo praticamente nulo, enquanto o Ministério da Justiça e Segurança Pública tem entre 75% e 80% de suas transações classificadas como sigilosas em todos os anos observados.
@@ -118,7 +118,7 @@ As três análises, detalhadas em [docs/report/relatorio.tex](docs/report/relato
 - [Decisões de modelagem](docs/decisoes_modelagem.md): racional de cada escolha do Esquema Estrela.
 - [Pipeline ETL](docs/ETL.md) e [Pipeline ELT](docs/ELT.md): como executar cada um.
 - [Validação e benchmark ETL × ELT](docs/benchmark-etl-elt.md): execução, verificações de qualidade e interpretação das medições.
-- [Relatório final](docs/report/relatorio.tex): consolida todas as etapas e as três análises.
+- [Relatório final](docs/report/relatorio.pdf): consolida todas as etapas e as três análises.
 
 ## Contribuição da Equipe
 
